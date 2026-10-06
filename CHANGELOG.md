@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - ADR-006, self-hosted publishing without GitHub Actions
 - `en/docs/devops/balise/` for the current local web setup
+- `en/docs/devops/balise/Caddyfile` and `incus-web-container.yaml`, current copies of the web container's Caddy and incus configuration; the demo now runs as a separate site at `https://flow.local:8443/` from `/srv/balise-sos-demo`, beside Balise 0.4.3 at `https://flow.local/`; the folder README records the sites, rebuild commands and which Caddy root certificate is in use
 
 ## [0.1.0] - 2026-10-06
 

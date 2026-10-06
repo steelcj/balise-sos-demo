@@ -11,10 +11,6 @@ devices:
     connect: tcp:127.0.0.1:443
     listen: tcp:0.0.0.0:443
     type: proxy
-  https-sos:
-    connect: tcp:127.0.0.1:8443
-    listen: tcp:0.0.0.0:8443
-    type: proxy
 ephemeral: false
 profiles:
   - default

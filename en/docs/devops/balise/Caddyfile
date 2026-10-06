@@ -10,7 +10,7 @@ flow.local {
 	header /sw.js Cache-Control no-cache
 }
 
-flow.local:8443 {
+sos-flow.local {
 	tls internal
 	root * /srv/balise-sos-demo
 	file_server

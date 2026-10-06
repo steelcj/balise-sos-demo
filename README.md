@@ -36,7 +36,7 @@ Start with the overview, then the guide for your role.
 - [Operator Guide: Building, Checking and Publishing](en/docs/guides/operator-guide--building-checking-and-publishing-v0-2-0.md)
 - [Editor Guide: Writing and Updating a Procedure](en/docs/guides/editor-guide--writing-and-updating-a-procedure-v0-1-1.md)
 - [Demo Script: Presenting Balise to a Municipality](en/docs/guides/demo-script--presenting-balise-to-a-municipality-v0-1-1.md)
-- [Session Log: Building the Balise SOS Demo](en/docs/process/sessions/2026-10-06--building-the-balise-sos-demo-v0-2-0.md), the start-to-finish record
+- [Session Log: Building the Balise SOS Demo](en/docs/process/sessions/2026-10-06--building-the-balise-sos-demo-v0-3-0.md), the start-to-finish record
 
 Decision records:
 

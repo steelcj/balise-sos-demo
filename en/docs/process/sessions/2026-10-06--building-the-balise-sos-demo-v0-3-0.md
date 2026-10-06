@@ -1,6 +1,6 @@
 ---
 dc:title: "Session Log: Building the Balise SOS Demo"
-dcterms:version: "0.2.0"
+dcterms:version: "0.3.0"
 dc:creator: "Christopher Steel"
 dc:contributor: "Claude Opus 5.5 (Anthropic)"
 dc:description: "Start-to-finish record of building the Balise SOS demo: decisions, steps, problems fixed, results and open work."
@@ -18,6 +18,10 @@ sat:uuid: ""
 sat:version_at_creation: ""
 sat:migration_status: pre-sat
 sat:changelog:
+  - version: "0.3.0"
+    date: "2026-10-06"
+    author: "Christopher Steel"
+    notes: "Added the third pass: the demo deployed beside Balise 0.4.3 as its own site, first at flow.local:8443 then at sos-flow.local, with the container configuration saved in en/docs/devops/balise/."
   - version: "0.2.0"
     date: "2026-10-06"
     author: "Christopher Steel"
@@ -30,7 +34,7 @@ sat:changelog:
 
 # Session Log: Building the Balise SOS Demo
 
-Version: 0.2.0
+Version: 0.3.0
 Status: Draft
 Style Guide: style-guide--technical-documentation-for-technologists
 
@@ -150,6 +154,36 @@ Two layout problems were found in screenshots and fixed: the navigation sat insi
 | Files stored by the service worker | 36, about 280 KiB | 39, about 320 KiB |
 | Offline zip | about 135 KiB | about 172 KiB |
 
+## Third pass, same day: running the demo beside Balise 0.4.3
+
+**What was on the machine.** Node 18.19.1, npm 9.2.0, Python 3.12.3 and incus 7.0.1. The `web` container, Debian 13 with Caddy 2.11.6 from the Caddy stable apt repository, served Balise 0.4.3 from `/srv/balise` at `https://flow.local/`, through proxy devices for ports 80 and 443. The Caddyfile held one hardcoded site block. Two files, `/etc/caddy/sites/balise.caddy` and `/etc/caddy/snippets/static-site.caddy`, were never imported and had no effect; they were left in place.
+
+**Build and check.** `npm ci`, `npm run build` and `npm run check` ran clean apart from the 8 known em-dash findings in `en/docs/automa/ai-collaboration/examples/`, which are upstream issues. Because of them `npm run check` still exits 1. One extra plain build ran by mistake while looking for warnings.
+
+**A separate site, not a replacement.** The owner chose to keep Balise 0.4.3 and serve the demo from its own folder, `/srv/balise-sos-demo`, with its own Caddy site block and a build whose `BALISE_PUBLIC_URL` names that address. `npm run deploy:local` was not used, since it targets `/srv/balise`; the script was called directly as `deploy-local.sh balise-sos-demo _site`.
+
+**First address, flow.local:8443.** The first arrangement added a proxy device for port 8443 and a `flow.local:8443` block. It worked, since `flow.local` already resolves, but the owner preferred a name to a port.
+
+**Second address, sos-flow.local.** With `tls internal`, Caddy issues each site name its own short-lived certificate signed by the same local root, so a new name needs no new trust on devices. The real cost of a new name is resolution. Avahi on the workstation announces only `flow.local`, and mDNS clients, Android in particular, resolve multi-label names such as `sos.flow.local` unreliably, so a single-label name was chosen. A systemd user unit, `avahi-alias-sos-flow.service`, publishes `sos-flow.local` at the LAN address `192.168.1.100`; a user unit was used because sudo needs a password on the workstation. The Caddy block was renamed, the 8443 device removed, and the demo rebuilt with `BALISE_PUBLIC_URL=https://sos-flow.local/` and redeployed. The Caddyfile was backed up in the container before each change.
+
+**Certificate trust.** Verification with curl first failed against a root under `/root/.local/share/caddy/`; the running service, which runs as the `caddy` user, uses the root under `/var/lib/caddy/.local/share/caddy/`. Against that root both sites returned 200 with the certificate verified. The workstation's own system store does not trust the root yet, so browsers on it still warn. The root was kept in a scratch folder and not committed.
+
+**Saved to the repository.** Current copies of the Caddyfile, the container configuration with machine-specific keys removed, and the avahi unit are in `en/docs/devops/balise/`, with a README covering the sites, rebuild commands, name publishing and certificate trust.
+
+**Browser test.** Playwright and Chromium were installed, with the owner's approval, into `~/.venvs/playwright` and `~/.cache/ms-playwright`, and `tests/browser-smoke.py` passed all 11 checks. The test serves `_site` from a local server, so it does not exercise the container.
+
+| Measure | Result |
+|---------|--------|
+| Demo address | `https://sos-flow.local/`, from `/srv/balise-sos-demo` |
+| Balise 0.4.3 | unchanged at `https://flow.local/` |
+| Files stored by the service worker | 39, about 322 KiB |
+| Offline zip | 41 files, about 171 KiB |
+| Site check | passed |
+| Conformance | 8 known upstream findings only |
+| Browser test | 11 of 11 passed |
+
+Still open from this pass: `sos-flow.local` has not been tried on phones or other machines on the LAN; the name is published only while the operator is logged in, unless lingering is enabled; the unit names a fixed LAN address; the operator guide and ADR-006 still describe only `https://flow.local/`.
+
 ## License
 
 This document, *Session Log: Building the Balise SOS Demo*, by **Christopher Steel**, with AI assistance from **Claude Opus 5.5 (Anthropic)**, is licensed under the [GNU General Public License v3.0 or later](https://www.gnu.org/licenses/gpl-3.0.html).
@@ -158,5 +192,6 @@ This document, *Session Log: Building the Balise SOS Demo*, by **Christopher Ste
 
 | Version | Status | Notes |
 |---------|--------|-------|
+| 0.3.0 | Draft | Added the third pass: the demo deployed beside Balise 0.4.3 as its own site, first at flow.local:8443 then at sos-flow.local, with the container configuration saved in en/docs/devops/balise/. |
 | 0.2.0 | Draft | Added the second pass: rebase onto the plan document, GitHub Actions replaced by local self-hosting per ADR-006, new signage-based theme with Atkinson Hyperlegible. |
 | 0.1.0 | Draft | Initial draft. |

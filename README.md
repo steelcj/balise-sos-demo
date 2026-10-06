@@ -41,7 +41,7 @@ Start with the overview, then the guide for your role.
 Decision records:
 
 - [ADR-001: Static Site Built With Eleventy](en/docs/architecture/adrs/adr-001-static-site-built-with-eleventy-v0-1-1.md)
-- [ADR-002: Two Offline Delivery Modes From One Build](en/docs/architecture/adrs/adr-002-two-offline-delivery-modes-from-one-build-v0-1-1.md)
+- [ADR-002: Two Offline Delivery Modes From One Build](en/docs/architecture/adrs/adr-002-two-offline-delivery-modes-from-one-build-v0-1-2.md)
 - [ADR-003: Search Index as a Plain Script](en/docs/architecture/adrs/adr-003-search-index-as-a-plain-script-v0-1-0.md)
 - [ADR-004: Relative File Links Everywhere](en/docs/architecture/adrs/adr-004-relative-file-links-everywhere-v0-1-1.md)
 - [ADR-005: Bilingual Pages Paired by Work Identifier](en/docs/architecture/adrs/adr-005-bilingual-pages-paired-by-work-identifier-v0-1-0.md)

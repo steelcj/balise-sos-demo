@@ -3,9 +3,12 @@
  * What it does, in plain terms:
  *  - On first visit with a network, it stores every file of the site on the
  *    device, so the whole site keeps working with no network at all.
- *  - Pages are asked from the network first, with a short time limit, so a
- *    reader on a working connection sees the newest version; if the network
- *    is down or too slow, the stored page is shown instead.
+ *  - Pages are shown from the stored copy at once, and refreshed from the
+ *    network in the background, so a page never waits on a network that is
+ *    down or half-up. A page not stored yet is asked from the network, with
+ *    a short time limit.
+ *  - version.js is asked from the network first, since it answers "is there
+ *    something newer?".
  *  - Everything else (styles, scripts, the search index) is served from the
  *    stored copy.
  *  - When the site changes, the cache name changes, the browser installs a
@@ -74,19 +77,42 @@ async function fromCache(request) {
 async function networkFirst(request) {
   try {
     const response = await withTimeout(fetch(request), NETWORK_TIMEOUT_MS);
-    if (response && response.ok) {
-      const cache = await caches.open(CACHE);
-      const key = new URL(request.url);
-      key.search = "";
-      if (key.pathname.endsWith("/")) key.pathname += "index.html";
-      cache.put(key.href, response.clone());
-    }
+    storePage(request, response.clone());
     return response;
   } catch (_) {
     const cached = await fromCache(request);
     if (cached) return cached;
     return (await fromCache(new Request(new URL("index.html", BASE).href))) || Response.error();
   }
+}
+
+// Store a good page response under its .../index.html key. Redirected
+// responses are not stored: Safari refuses them for a navigation.
+async function storePage(request, response) {
+  if (!response || !response.ok || response.redirected) return;
+  const cache = await caches.open(CACHE);
+  const key = new URL(request.url);
+  key.search = "";
+  if (key.pathname.endsWith("/")) key.pathname += "index.html";
+  await cache.put(key.href, response);
+}
+
+// Pages: answer from the store at once, refresh it in the background.
+async function storedThenRefresh(event, request) {
+  const refresh = fetch(request).then(
+    (response) => storePage(request, response.clone()).then(() => response),
+    () => undefined
+  );
+  const cached = await fromCache(request);
+  if (cached) {
+    event.waitUntil(refresh);
+    return cached;
+  }
+  try {
+    const response = await withTimeout(refresh, NETWORK_TIMEOUT_MS);
+    if (response) return response;
+  } catch (_) {}
+  return (await fromCache(new Request(new URL("index.html", BASE).href))) || Response.error();
 }
 
 async function cacheFirst(request) {
@@ -102,8 +128,10 @@ self.addEventListener("fetch", (event) => {
   // The offline zip is large and is not stored; let it go straight to the network.
   if (new URL(request.url).pathname.includes("/download/")) return;
   // version.js answers "is there something newer?", so it must not come from the store first.
-  if (request.mode === "navigate" || new URL(request.url).pathname.endsWith("/version.js")) {
+  if (new URL(request.url).pathname.endsWith("/version.js")) {
     event.respondWith(networkFirst(request));
+  } else if (request.mode === "navigate") {
+    event.respondWith(storedThenRefresh(event, request));
   } else {
     event.respondWith(cacheFirst(request));
   }

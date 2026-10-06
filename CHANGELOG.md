@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Publishing moved off GitHub: the GitHub Pages workflow is removed; `npm run deploy:local` publishes to the incus web container on `flow.local` with `en/docs/devops/balise/deploy-local.sh`; downloaded copies check `https://flow.local/` for updates (ADR-006)
 - New look based on municipal signage: navy header, 911 as a red band, red reserved for danger and priority, amber copy-status line, procedure lists as signboard rows, Atkinson Hyperlegible font stored with the site, emoji icons removed
 - Documents updated to match, with version bumps: overview, ADR-001, ADR-002, ADR-004, operator guide, editor guide, demo script, session log
+- Offline web copy: pages now open from the stored copy at once and refresh in the background, instead of waiting up to four seconds on the network; offline on a phone still on Wi-Fi, every link, the language switch included, had taken four seconds. The browser test gains a stalled-network check. ADR-002 0.1.2
 - Session log 0.3.0: third pass recording the demo deployed beside Balise 0.4.3 at `https://sos-flow.local/`
 
 ### Added

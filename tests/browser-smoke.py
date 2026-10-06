@@ -12,7 +12,9 @@ playwright, then playwright install chromium). Run after `npm run build`.
   2. Copy served from the web under a sub-path, the way GitHub Pages
      serves it: the service worker stores the site, then with the network
      cut the browser still opens pages it never visited, and search still
-     works.
+     works. With the network stalled rather than cut, the way a phone on
+     Wi-Fi with no working connection behaves, the language switch still
+     answers at once from storage.
 
 Screenshots land in tests/screenshots/ (ignored by git).
 
@@ -25,6 +27,7 @@ import shutil
 import sys
 import tempfile
 import threading
+import time
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
@@ -33,6 +36,20 @@ ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "_site"
 SHOTS = ROOT / "tests" / "screenshots"
 failures = []
+stall = threading.Event()
+STALL_SECONDS = 8
+
+
+class Handler(http.server.SimpleHTTPRequestHandler):
+    """Static files; while `stall` is set, pages hang before answering."""
+
+    def do_GET(self):
+        if stall.is_set() and self.path.split("?")[0].endswith((".html", "/")):
+            time.sleep(STALL_SECONDS)
+        super().do_GET()
+
+    def log_message(self, *args, **kwargs):
+        pass
 
 
 def check(cond, label):
@@ -45,8 +62,7 @@ def serve_under_subpath():
     """Serve _site at http://127.0.0.1:<port>/balise-sos-demo/."""
     tmp = Path(tempfile.mkdtemp())
     shutil.copytree(SITE, tmp / "balise-sos-demo")
-    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(tmp))
-    handler.log_message = lambda *a, **k: None
+    handler = functools.partial(Handler, directory=str(tmp))
     httpd = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
     return httpd, f"http://127.0.0.1:{httpd.server_address[1]}/balise-sos-demo/"
@@ -95,6 +111,15 @@ def web_mode(browser, base):
     page.click("[data-action=check-update]")
     page.wait_for_function("document.getElementById('update-result').textContent.indexOf('…') === -1 && document.getElementById('update-result').textContent.length > 0")
     check("up to date" in page.inner_text("#update-result"), "web: update check reports up to date")
+
+    page.goto(base + "en-ca/procedures/winter-storm/index.html")
+    stall.set()
+    started = time.monotonic()
+    page.click("a.lang-switch")
+    page.wait_for_selector("h1")
+    elapsed = time.monotonic() - started
+    stall.clear()
+    check("/fr-ca/procedures/" in page.url and elapsed < 1.5, f"web stalled: language switch answers from storage ({elapsed:.1f} s)")
 
     context.set_offline(True)
     page.goto(base + "fr-ca/procedures/avis-d-ebullition/index.html")

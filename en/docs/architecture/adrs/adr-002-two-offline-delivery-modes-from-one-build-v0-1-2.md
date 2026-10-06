@@ -1,6 +1,6 @@
 ---
 dc:title: "ADR-002: Two Offline Delivery Modes From One Build"
-dcterms:version: "0.1.1"
+dcterms:version: "0.1.2"
 dc:creator: "Christopher Steel"
 dc:contributor: "Claude Opus 5.5 (Anthropic)"
 dc:description: "Why one build yields an installable web copy and a downloadable zip, and how each stays current."
@@ -18,6 +18,10 @@ sat:uuid: ""
 sat:version_at_creation: ""
 sat:migration_status: pre-sat
 sat:changelog:
+  - version: "0.1.2"
+    date: "2026-10-06"
+    author: "Christopher Steel"
+    notes: "Pages now come from the stored copy at once and refresh in the background; the four second network-first wait made every link slow on a phone offline but still on Wi-Fi. version.js stays network first."
   - version: "0.1.1"
     date: "2026-10-06"
     author: "Christopher Steel"
@@ -30,7 +34,7 @@ sat:changelog:
 
 # ADR-002: Two Offline Delivery Modes From One Build
 
-Version: 0.1.1
+Version: 0.1.2
 Status: Draft
 Style Guide: style-guide--technical-documentation-for-technologists
 
@@ -52,7 +56,7 @@ Two browser mechanisms fit different halves of the problem. A service worker can
 
 Support both modes from the same output folder.
 
-**Web, installed.** `_11ty/offline-shell.js` writes `sw.js` after each build. The worker's cache name includes a SHA-256 hash of every file it stores, so any change to the site yields a new worker. On first visit with a network the worker stores all files. Pages are fetched network first with a four second limit, falling back to the stored copy; other files come from the store. When a new worker installs, it replaces the stored copy and deletes the old one. The reader does nothing.
+**Web, installed.** `_11ty/offline-shell.js` writes `sw.js` after each build. The worker's cache name includes a SHA-256 hash of every file it stores, so any change to the site yields a new worker. On first visit with a network the worker stores all files. Pages come from the stored copy at once, and the worker refreshes them from the network in the background, so a page never waits on a network that is down or half-up; a page not yet stored is fetched with a four second limit. `version.js` is fetched network first, since it answers whether a newer version exists. Other files come from the store. Pages were first fetched network first with a four second limit, but on a phone offline yet still on Wi-Fi the request hung for the full limit, so every link, the language switch included, took four seconds. When a new worker installs, it replaces the stored copy and deletes the old one. The reader does nothing.
 
 **File, downloaded.** `scripts/package-offline.js` zips the output into `download/balise-sos-demo-<version>.zip` with a SHA-256 checksum, under a single versioned top-level folder, with short French and English notes saying to open `index.html`. File times inside the zip are set to the build date, so a given commit always yields the same bytes.
 
@@ -88,5 +92,6 @@ This document, *ADR-002: Two Offline Delivery Modes From One Build*, by **Christ
 
 | Version | Status | Notes |
 |---------|--------|-------|
+| 0.1.2 | Draft | Pages now come from the stored copy at once and refresh in the background; the four second network-first wait made every link slow on a phone offline but still on Wi-Fi. version.js stays network first. |
 | 0.1.1 | Draft | Stored copy size updated to about 39 files and 320 KiB after the theme added the font. |
 | 0.1.0 | Draft | Initial draft. |

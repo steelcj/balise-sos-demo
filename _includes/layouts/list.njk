@@ -1,0 +1,18 @@
+---
+layout: layouts/base.njk
+---
+{%- set t = i18n[locale] -%}
+<article>
+  <h1>{{ title }}</h1>
+  <div class="prose" data-search="body" data-search-title="{{ title }}" data-search-summary="{{ summary }}" data-search-keywords="{{ keywords | join(' ') if keywords else '' }}">
+    {{ content | safe }}
+  </div><!-- /search-body -->
+  <ul class="cards">
+    {%- for p in collections.procedures | inLocale(locale) %}
+    <li class="card priority-{{ p.data.priority or 'normal' }}">
+      <a href="{{ p.url }}"><span class="card-icon" aria-hidden="true">{{ p.data.icon }}</span><span class="card-title">{{ p.data.title }}</span></a>
+      <p>{{ p.data.summary }}</p>
+    </li>
+    {%- endfor %}
+  </ul>
+</article>

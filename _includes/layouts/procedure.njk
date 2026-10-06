@@ -1,0 +1,18 @@
+---
+layout: layouts/base.njk
+---
+{%- set t = i18n[locale] -%}
+<article class="procedure">
+  <p class="eyebrow"><a href="/{{ locale }}/procedures/">{{ t.sectionProcedures }}</a></p>
+  <h1>{{ title }}</h1>
+  {%- if summary %}<p class="lede">{{ summary }}</p>{% endif %}
+  <dl class="meta">
+    <div><dt>{{ t.responsible }}</dt><dd>{{ responsible }}</dd></div>
+    <div><dt>{{ t.reviewed }}</dt><dd><time datetime="{{ reviewed | isoDay }}">{{ reviewed | isoDay }}</time></dd></div>
+    <div><dt>{{ t.version }}</dt><dd>{{ docVersion }}</dd></div>
+  </dl>
+  <div class="prose procedure-body" data-search="body" data-search-title="{{ title }}" data-search-summary="{{ summary }}" data-search-keywords="{{ keywords | join(' ') if keywords else '' }}">
+    {{ content | safe }}
+  </div><!-- /search-body -->
+  <p class="print-this no-print"><button type="button" data-action="print">{{ t.printThis }}</button></p>
+</article>

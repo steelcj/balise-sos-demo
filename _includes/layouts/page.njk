@@ -1,0 +1,9 @@
+---
+layout: layouts/base.njk
+---
+<article>
+  <h1>{{ title }}</h1>
+  <div class="prose" data-search="body" data-search-title="{{ title }}" data-search-summary="{{ summary }}" data-search-keywords="{{ keywords | join(' ') if keywords else '' }}">
+    {{ content | safe }}
+  </div><!-- /search-body -->
+</article>

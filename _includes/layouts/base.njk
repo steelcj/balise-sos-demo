@@ -1,0 +1,71 @@
+{%- set t = i18n[locale] -%}
+{%- set other = "en-ca" if locale == "fr-ca" else "fr-ca" -%}
+{%- set work = collections.byWork[relation] if relation else null -%}
+{%- set otherPage = work[other] if work else null -%}
+<!doctype html>
+<html lang="{{ t.langTag }}" data-locale="{{ locale }}" data-root="{{ page.url | rootFrom }}" data-version="{{ site.version }}" data-built="{{ site.buildDate }}" data-stale-days="{{ site.staleAfterDays }}" data-public-url="{{ site.publicUrl }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }} · {{ site.name }} · {{ site.municipality }}</title>
+  {%- if summary %}
+  <meta name="description" content="{{ summary }}">
+  {%- endif %}
+  <meta name="theme-color" content="#b3261e">
+  <meta name="dc.identifier" content="{{ relation }}">
+  <meta name="dc.language" content="{{ t.langTag }}">
+  {%- if reviewed %}
+  <meta name="dc.date" content="{{ reviewed | isoDay }}">
+  {%- endif %}
+  {%- if otherPage %}
+  <link rel="alternate" hreflang="{{ i18n[other].langTag }}" href="{{ otherPage.url }}">
+  {%- endif %}
+  <link rel="icon" href="/assets/img/balise-icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/balise.css">
+  <link rel="stylesheet" href="/assets/css/print.css" media="print">
+  <script type="application/json" id="balise-strings">{{ t | dump | safe }}</script>
+</head>
+<body class="kind-{{ kind or 'page' }}">
+  <a class="skip" href="#contenu">{{ t.skip }}</a>
+  <p class="demo-banner" role="note">{{ t.demoBanner }}</p>
+  <header class="site-header">
+    <div class="wrap header-row">
+      <a class="brand" href="/{{ locale }}/">
+        <img src="/assets/img/balise-icon.svg" alt="" width="40" height="40">
+        <span class="brand-text"><strong>{{ site.name }}</strong><span>{{ site.municipality }}</span></span>
+      </a>
+      {%- if otherPage %}
+      <a class="lang-switch" href="{{ otherPage.url }}" hreflang="{{ i18n[other].langTag }}" lang="{{ i18n[other].langTag }}">{{ t.otherLanguage }}</a>
+      {%- else %}
+      <a class="lang-switch" href="/{{ other }}/" hreflang="{{ i18n[other].langTag }}" lang="{{ i18n[other].langTag }}" title="{{ t.otherLanguageMissing }}">{{ t.otherLanguage }}</a>
+      {%- endif %}
+    </div>
+    <p class="danger wrap"><span aria-hidden="true">⚠</span> {{ t.danger }}</p>
+    <nav class="wrap site-nav" aria-label="{{ t.nav }}">
+      <ul>
+        {%- for item in nav[locale] %}
+        <li><a href="{{ item.url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.label }}</a></li>
+        {%- endfor %}
+      </ul>
+      <form class="search-mini" role="search" action="{{ nav.search[locale] }}" method="get">
+        <label class="visually-hidden" for="q-mini">{{ t.searchLabel }}</label>
+        <input id="q-mini" name="q" type="search" placeholder="{{ t.searchPlaceholder }}" autocomplete="off">
+        <button type="submit">{{ t.searchButton }}</button>
+      </form>
+    </nav>
+  </header>
+
+  <main id="contenu" class="wrap" tabindex="-1">
+    {{ content | safe }}
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p class="copy-status" id="copy-status" aria-live="polite">{{ t.versionLine }} {{ site.version }}, {{ t.builtOn }} {{ site.buildDay }}.</p>
+      <p>{{ t.footerNote }}</p>
+    </div>
+  </footer>
+  <script src="/assets/js/balise.js"></script>
+</body>
+</html>

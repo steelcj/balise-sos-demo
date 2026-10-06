@@ -1,0 +1,20 @@
+{
+  "name": "balise-sos-demo",
+  "private": true,
+  "description": "Balise demo: offline-first emergency procedures for small municipalities, as a static site that opens from disk or installs from the web.",
+  "license": "GPL-3.0-or-later",
+  "author": "Christopher Steel",
+  "scripts": {
+    "clean": "node scripts/clean.js",
+    "build": "node scripts/clean.js && eleventy && node scripts/package-offline.js",
+    "start": "eleventy --serve",
+    "check": "node scripts/check-site.js && python3 check-conformance.py"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.2",
+    "fflate": "^0.8.2"
+  }
+}

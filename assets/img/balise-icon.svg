@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="t">
+  <title id="t">Balise</title>
+  <rect width="64" height="64" rx="14" fill="#b3261e"/>
+  <g fill="none" stroke="#fffdf7" stroke-width="3.5" stroke-linecap="round">
+    <path d="M14 20 L21 23"/>
+    <path d="M50 20 L43 23"/>
+    <path d="M12 31 L20 31"/>
+    <path d="M52 31 L44 31"/>
+    <path d="M32 9 L32 15"/>
+  </g>
+  <path d="M25 52 L28 30 L36 30 L39 52 Z" fill="#fffdf7"/>
+  <rect x="26" y="22" width="12" height="8" rx="2" fill="#f2a900"/>
+  <path d="M24 22 L32 17 L40 22 Z" fill="#fffdf7"/>
+  <rect x="20" y="52" width="24" height="4" rx="2" fill="#fffdf7"/>
+  <rect x="28" y="38" width="8" height="3" fill="#b3261e"/>
+</svg>

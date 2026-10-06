@@ -1,0 +1,20 @@
+---
+layout: layouts/base.njk
+---
+{%- set t = i18n[locale] -%}
+<article class="search-page">
+  <h1>{{ title }}</h1>
+  <form class="search-full" role="search" action="" method="get" data-search-form>
+    <label for="q">{{ t.searchLabel }}</label>
+    <div class="search-row">
+      <input id="q" name="q" type="search" placeholder="{{ t.searchPlaceholder }}" autocomplete="off" autofocus>
+      <button type="submit">{{ t.searchButton }}</button>
+    </div>
+  </form>
+  <noscript><p class="notice">{{ t.searchNoJs }}</p></noscript>
+  <p class="search-count" id="search-count" aria-live="polite"></p>
+  <ol class="search-results" id="search-results"></ol>
+  {{ content | safe }}
+</article>
+<script src="/assets/search/{{ locale }}.js"></script>
+<script src="/assets/js/search.js"></script>

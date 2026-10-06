@@ -1,0 +1,24 @@
+---
+layout: layouts/base.njk
+---
+{%- set t = i18n[locale] -%}
+<article class="print-all">
+  <h1>{{ title }}</h1>
+  <div class="prose">{{ content | safe }}</div>
+  <p class="no-print"><button type="button" data-action="print">{{ t.print }}</button></p>
+  <nav class="toc" aria-label="{{ t.allProcedures }}">
+    <ol>
+      {%- for p in collections.procedures | inLocale(locale) %}
+      <li><a href="#{{ p.data.identifier }}">{{ p.data.title }}</a></li>
+      {%- endfor %}
+    </ol>
+  </nav>
+  {%- for p in collections.procedures | inLocale(locale) %}
+  <section class="procedure printed" id="{{ p.data.identifier }}">
+    <h2>{{ p.data.title }}</h2>
+    <p class="lede">{{ p.data.summary }}</p>
+    <p class="meta-line">{{ t.responsible }} : {{ p.data.responsible }} · {{ t.reviewed }} : {{ p.data.reviewed | isoDay }} · {{ t.version }} {{ p.data.docVersion }}</p>
+    <div class="prose procedure-body demote">{{ p.content | safe }}</div>
+  </section>
+  {%- endfor %}
+</article>

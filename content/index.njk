@@ -1,0 +1,46 @@
+---
+permalink: /index.html
+eleventyExcludeFromCollections: true
+---
+<!doctype html>
+<html lang="fr-CA" data-root="./" data-version="{{ site.version }}" data-built="{{ site.buildDate }}" data-stale-days="{{ site.staleAfterDays }}" data-public-url="{{ site.publicUrl }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ site.name }} · {{ site.municipality }}</title>
+  <meta name="description" content="Procédures d'urgence hors ligne. Offline emergency procedures. Démonstration / demonstration.">
+  <meta name="theme-color" content="#b3261e">
+  <link rel="alternate" hreflang="fr-CA" href="/fr-ca/">
+  <link rel="alternate" hreflang="en-CA" href="/en-ca/">
+  <link rel="icon" href="/assets/img/balise-icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/balise.css">
+</head>
+<body>
+  <p class="demo-banner" role="note">Démonstration, données fictives. <span lang="en-CA">Demonstration, fictional data.</span></p>
+  <header class="site-header">
+    <div class="wrap header-row">
+      <span class="brand">
+        <img src="/assets/img/balise-icon.svg" alt="" width="48" height="48">
+        <span class="brand-text"><strong>{{ site.name }}</strong><span>{{ site.municipality }}</span></span>
+      </span>
+    </div>
+    <p class="danger wrap"><span aria-hidden="true">⚠</span> Danger immédiat : 911. <span lang="en-CA">Immediate danger: 911.</span></p>
+  </header>
+  <main id="contenu" class="wrap">
+    <h1>Procédures d’urgence <span lang="en-CA">· Emergency procedures</span></h1>
+    <div class="lang-choice">
+      <a href="/fr-ca/" hreflang="fr-CA">Français</a>
+      <a href="/en-ca/" hreflang="en-CA" lang="en-CA">English</a>
+    </div>
+    <p>Fonctionne sans réseau. <span lang="en-CA">Works with no network.</span></p>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <p class="copy-status" id="copy-status">Version {{ site.version }} · {{ site.buildDay }}</p>
+    </div>
+  </footer>
+  <script type="application/json" id="balise-strings">{"statusFile":"Copie locale / Local copy.","statusOffline":"Hors ligne OK / Offline ready.","statusOnline":"…","statusStale":"Copie de {n} jours / Copy is {n} days old."}</script>
+  <script src="/assets/js/balise.js"></script>
+</body>
+</html>

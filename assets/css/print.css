@@ -1,0 +1,86 @@
+/* Balise SOS, print styles.
+ *
+ * Paper is the last copy that still works when every battery is flat.
+ * Printing a procedure, or the whole binder from the printable version
+ * page, gives clean black on white with empty boxes to tick by pen.
+ */
+
+@page {
+  margin: 16mm 14mm;
+}
+
+body {
+  background: #fff;
+  color: #000;
+  font-size: 11pt;
+}
+
+.skip,
+.site-nav,
+.lang-switch,
+.no-print,
+.print-this,
+.search-mini,
+.site-footer .copy-status {
+  display: none !important;
+}
+
+.demo-banner {
+  background: none;
+  border: 1px solid #000;
+  color: #000;
+}
+
+.site-header {
+  border-bottom: 2pt solid #000;
+}
+
+.danger {
+  color: #000;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+.meta,
+.prose blockquote,
+.card.priority-high {
+  background: none;
+  border: 1px solid #000;
+}
+
+.procedure-body ul > li::before,
+.js .procedure-body ul > li::before {
+  display: block;
+  border-color: #000;
+}
+
+.procedure-body ul > li input[type="checkbox"] {
+  display: none;
+}
+
+.procedure-body ul > li.done > label {
+  text-decoration: none;
+  color: #000;
+}
+
+h2,
+h3 {
+  break-after: avoid;
+}
+
+li,
+tr,
+blockquote {
+  break-inside: avoid;
+}
+
+.printed {
+  break-before: page;
+}
+
+.print-all .toc {
+  break-after: page;
+}

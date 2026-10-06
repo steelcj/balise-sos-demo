@@ -5,7 +5,6 @@ relation: urn:uuid:ec5649e9-932c-4f1d-905c-3ffba020d419
 identifier: boil-water-advisory
 order: 5
 priority: normal
-icon: 💧
 keywords: ["water", "contamination", "public health", "boil", "tap"]
 responsible: Drinking water lead
 reviewed: 2026-09-15

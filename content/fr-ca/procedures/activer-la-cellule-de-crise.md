@@ -5,7 +5,6 @@ relation: urn:uuid:70ba7264-1676-44f9-bdd4-58cd647d2b98
 identifier: activer-la-cellule-de-crise
 order: 1
 priority: high
-icon: 🔔
 keywords: ["mobilisation", "alerte", "urgence", "sinistre", "équipe", "sécurité civile"]
 responsible: Coordonnatrice municipale de la sécurité civile
 reviewed: 2026-09-15

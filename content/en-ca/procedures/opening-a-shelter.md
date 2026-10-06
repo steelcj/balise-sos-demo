@@ -5,7 +5,6 @@ relation: urn:uuid:e78248e8-bb1f-4eed-b355-43869ffebc56
 identifier: opening-a-shelter
 order: 4
 priority: normal
-icon: 🏠
 keywords: ["refuge", "shelter", "evacuation", "warming centre", "evacuees", "lodging"]
 responsible: Disaster services lead
 reviewed: 2026-09-15

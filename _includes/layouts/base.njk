@@ -41,8 +41,10 @@
       <a class="lang-switch" href="/{{ other }}/" hreflang="{{ i18n[other].langTag }}" lang="{{ i18n[other].langTag }}" title="{{ t.otherLanguageMissing }}">{{ t.otherLanguage }}</a>
       {%- endif %}
     </div>
-    <p class="danger wrap"><span aria-hidden="true">⚠</span> {{ t.danger }}</p>
-    <nav class="wrap site-nav" aria-label="{{ t.nav }}">
+    <div class="danger"><p class="wrap">{{ t.danger | safe }}</p></div>
+  </header>
+  <nav class="site-nav" aria-label="{{ t.nav }}">
+    <div class="wrap">
       <ul>
         {%- for item in nav[locale] %}
         <li><a href="{{ item.url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.label }}</a></li>
@@ -53,8 +55,8 @@
         <input id="q-mini" name="q" type="search" placeholder="{{ t.searchPlaceholder }}" autocomplete="off">
         <button type="submit">{{ t.searchButton }}</button>
       </form>
-    </nav>
-  </header>
+    </div>
+  </nav>
 
   <main id="contenu" class="wrap" tabindex="-1">
     {{ content | safe }}

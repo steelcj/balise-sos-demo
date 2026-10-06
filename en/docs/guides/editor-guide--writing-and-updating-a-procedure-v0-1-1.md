@@ -1,6 +1,6 @@
 ---
 dc:title: "Editor Guide: Writing and Updating a Procedure"
-dcterms:version: "0.1.0"
+dcterms:version: "0.1.1"
 dc:creator: "Christopher Steel"
 dc:contributor: "Claude Opus 5.5 (Anthropic)"
 dc:description: "How to write a Balise procedure, keep French and English together, and get changes to every copy."
@@ -18,6 +18,10 @@ sat:uuid: ""
 sat:version_at_creation: ""
 sat:migration_status: pre-sat
 sat:changelog:
+  - version: "0.1.1"
+    date: "2026-10-06"
+    author: "Christopher Steel"
+    notes: "Removed the icon field, dropped with the new theme; priority description matches the Priority label."
   - version: "0.1.0"
     date: "2026-10-06"
     author: "Christopher Steel"
@@ -26,7 +30,7 @@ sat:changelog:
 
 # Editor Guide: Writing and Updating a Procedure
 
-Version: 0.1.0
+Version: 0.1.1
 Status: Draft
 Style Guide: style-guide--plain-language-for-general-audiences
 
@@ -50,7 +54,6 @@ relation: urn:uuid:fa2d8989-a9e0-4a28-9108-06c58aac00fc
 identifier: panne-electricite-prolongee
 order: 2
 priority: high
-icon: ⚡
 keywords: ["électricité", "courant", "génératrice"]
 responsible: Direction des travaux publics
 reviewed: 2026-09-15
@@ -65,8 +68,7 @@ docVersion: "1.1"
 | `relation` | The code that ties this page to its translation. Copy it exactly from the other language |
 | `identifier` | The file name without `.md` |
 | `order` | Position in the list, 1 first |
-| `priority` | `high` shows the procedure in red, first in mind; leave it out otherwise |
-| `icon` | One symbol shown in the list |
+| `priority` | `high` marks the procedure in red, labelled Priority, in every list; leave it out otherwise |
 | `keywords` | Other words people might search with, like "refuge" for a shelter |
 | `responsible` | The role, not the person, so it stays true when people change |
 | `reviewed` | The date someone last checked the whole procedure |
@@ -107,4 +109,5 @@ This document, *Editor Guide: Writing and Updating a Procedure*, by **Christophe
 
 | Version | Status | Notes |
 |---------|--------|-------|
+| 0.1.1 | Draft | Removed the icon field, dropped with the new theme; priority description matches the Priority label. |
 | 0.1.0 | Draft | Initial draft. |

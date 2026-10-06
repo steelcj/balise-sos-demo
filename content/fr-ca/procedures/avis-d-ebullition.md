@@ -5,7 +5,6 @@ relation: urn:uuid:ec5649e9-932c-4f1d-905c-3ffba020d419
 identifier: avis-d-ebullition
 order: 5
 priority: normal
-icon: 💧
 keywords: ["eau", "aqueduc", "contamination", "santé publique", "bouillir"]
 responsible: Responsable de l’eau potable
 reviewed: 2026-09-15

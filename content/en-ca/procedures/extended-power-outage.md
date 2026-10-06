@@ -5,7 +5,6 @@ relation: urn:uuid:fa2d8989-a9e0-4a28-9108-06c58aac00fc
 identifier: extended-power-outage
 order: 2
 priority: high
-icon: ⚡
 keywords: ["electricity", "power", "hydro", "generator", "carbon monoxide", "cold", "blackout"]
 responsible: Public works
 reviewed: 2026-09-15

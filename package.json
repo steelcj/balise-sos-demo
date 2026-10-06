@@ -8,7 +8,8 @@
     "clean": "node scripts/clean.js",
     "build": "node scripts/clean.js && eleventy && node scripts/package-offline.js",
     "start": "eleventy --serve",
-    "check": "node scripts/check-site.js && python3 check-conformance.py"
+    "check": "node scripts/check-site.js && python3 check-conformance.py",
+    "deploy:local": "sh en/docs/devops/balise/deploy-local.sh balise _site"
   },
   "engines": {
     "node": ">=18"

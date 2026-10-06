@@ -5,7 +5,6 @@ relation: urn:uuid:0baed89b-77eb-4141-920b-7826b3ef51a8
 identifier: winter-storm
 order: 3
 priority: normal
-icon: ❄️
 keywords: ["snow", "ice", "freezing rain", "blizzard", "plowing", "snow clearing", "cold"]
 responsible: Public works
 reviewed: 2026-09-15

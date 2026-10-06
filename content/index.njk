@@ -25,19 +25,19 @@ eleventyExcludeFromCollections: true
         <span class="brand-text"><strong>{{ site.name }}</strong><span>{{ site.municipality }}</span></span>
       </span>
     </div>
-    <p class="danger wrap"><span aria-hidden="true">⚠</span> Danger immédiat : 911. <span lang="en-CA">Immediate danger: 911.</span></p>
+    <div class="danger"><p class="wrap">Danger immédiat : <strong>911</strong>. <span lang="en-CA">Immediate danger: <strong>911</strong>.</span></p></div>
   </header>
-  <main id="contenu" class="wrap">
-    <h1>Procédures d’urgence <span lang="en-CA">· Emergency procedures</span></h1>
+  <main id="contenu" class="wrap entry">
+    <h1>Choisissez votre langue<br><span lang="en-CA">Choose your language</span></h1>
     <div class="lang-choice">
-      <a href="/fr-ca/" hreflang="fr-CA">Français</a>
-      <a href="/en-ca/" hreflang="en-CA" lang="en-CA">English</a>
+      <a href="/fr-ca/" hreflang="fr-CA">Français<small>Procédures d’urgence</small></a>
+      <a href="/en-ca/" hreflang="en-CA" lang="en-CA">English<small>Emergency procedures</small></a>
     </div>
     <p>Fonctionne sans réseau. <span lang="en-CA">Works with no network.</span></p>
   </main>
   <footer class="site-footer">
     <div class="wrap">
-      <p class="copy-status" id="copy-status">Version {{ site.version }} · {{ site.buildDay }}</p>
+      <p class="copy-status" id="copy-status">Version {{ site.version }}, {{ site.buildDay }}</p>
     </div>
   </footer>
   <script type="application/json" id="balise-strings">{"statusFile":"Copie locale / Local copy.","statusOffline":"Hors ligne OK / Offline ready.","statusOnline":"…","statusStale":"Copie de {n} jours / Copy is {n} days old."}</script>

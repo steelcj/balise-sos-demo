@@ -1,6 +1,6 @@
 ---
 dc:title: "ADR-004: Relative File Links Everywhere"
-dcterms:version: "0.1.0"
+dcterms:version: "0.1.1"
 dc:creator: "Christopher Steel"
 dc:contributor: "Claude Opus 5.5 (Anthropic)"
 dc:description: "Why every output link is relative and names a file, so the site works from disk and any sub-path."
@@ -18,6 +18,10 @@ sat:uuid: ""
 sat:version_at_creation: ""
 sat:migration_status: pre-sat
 sat:changelog:
+  - version: "0.1.1"
+    date: "2026-10-06"
+    author: "Christopher Steel"
+    notes: "Sub-path example no longer refers to GitHub Pages."
   - version: "0.1.0"
     date: "2026-10-06"
     author: "Christopher Steel"
@@ -26,7 +30,7 @@ sat:changelog:
 
 # ADR-004: Relative File Links Everywhere
 
-Version: 0.1.0
+Version: 0.1.1
 Status: Draft
 Style Guide: style-guide--technical-documentation-for-technologists
 
@@ -40,7 +44,7 @@ Accepted, 2026-10-06.
 
 ## Context
 
-The same output must work in three places: opened from disk, served from a domain root, and served from a sub-path, as GitHub Pages serves this repository at `/balise-sos-demo/`. Root links like `/fr-ca/` point at the root of the disk from a `file://` page, and at the wrong place under a sub-path. Directory links like `contacts/` work on a web server, which answers with `index.html`, but a browser opening a local folder shows a file listing instead.
+The same output must work in three places: opened from disk, served from a domain root, and served from a sub-path, as a server holding several sites might serve it at `/balise/`. Root links like `/fr-ca/` point at the root of the disk from a `file://` page, and at the wrong place under a sub-path. Directory links like `contacts/` work on a web server, which answers with `index.html`, but a browser opening a local folder shows a file listing instead.
 
 ## Decision
 
@@ -70,4 +74,5 @@ This document, *ADR-004: Relative File Links Everywhere*, by **Christopher Steel
 
 | Version | Status | Notes |
 |---------|--------|-------|
+| 0.1.1 | Draft | Sub-path example no longer refers to GitHub Pages. |
 | 0.1.0 | Draft | Initial draft. |

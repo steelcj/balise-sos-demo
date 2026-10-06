@@ -1,6 +1,6 @@
 ---
 dc:title: "Demo Script: Presenting Balise to a Municipality"
-dcterms:version: "0.1.0"
+dcterms:version: "0.1.1"
 dc:creator: "Christopher Steel"
 dc:contributor: "Claude Opus 5.5 (Anthropic)"
 dc:description: "A fifteen-minute script for showing Balise to a municipality, with preparation, key moments and common questions."
@@ -18,6 +18,10 @@ sat:uuid: ""
 sat:version_at_creation: ""
 sat:migration_status: pre-sat
 sat:changelog:
+  - version: "0.1.1"
+    date: "2026-10-06"
+    author: "Christopher Steel"
+    notes: "Running-cost answer no longer names GitHub Pages."
   - version: "0.1.0"
     date: "2026-10-06"
     author: "Christopher Steel"
@@ -26,7 +30,7 @@ sat:changelog:
 
 # Demo Script: Presenting Balise to a Municipality
 
-Version: 0.1.0
+Version: 0.1.1
 Status: Draft
 Style Guide: style-guide--plain-language-for-general-audiences
 
@@ -64,7 +68,7 @@ This is a script for showing Balise to a municipality in about fifteen minutes. 
 
 **Is our data on the Internet?** Only what they choose to publish. The list of vulnerable residents stays on paper, under lock, as the procedures themselves say.
 
-**What does it cost to run?** Hosting a static site is free on GitHub Pages or nearly free elsewhere; it can also be hosted on their own server.
+**What does it cost to run?** A static site needs only a small web server, on their own machine, a modest rented server, or Vishpala's; no database, no licences, and no dependency on any one hosting company.
 
 ## Close
 
@@ -78,4 +82,5 @@ This document, *Demo Script: Presenting Balise to a Municipality*, by **Christop
 
 | Version | Status | Notes |
 |---------|--------|-------|
+| 0.1.1 | Draft | Running-cost answer no longer names GitHub Pages. |
 | 0.1.0 | Draft | Initial draft. |

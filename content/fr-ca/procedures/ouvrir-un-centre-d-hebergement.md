@@ -5,7 +5,6 @@ relation: urn:uuid:e78248e8-bb1f-4eed-b355-43869ffebc56
 identifier: ouvrir-un-centre-d-hebergement
 order: 4
 priority: normal
-icon: 🏠
 keywords: ["refuge", "abri", "sinistrés", "réchauffement", "évacuation", "hébergement"]
 responsible: Responsable des services aux sinistrés
 reviewed: 2026-09-15

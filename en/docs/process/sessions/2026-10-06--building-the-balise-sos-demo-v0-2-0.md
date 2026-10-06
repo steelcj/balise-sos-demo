@@ -1,6 +1,6 @@
 ---
 dc:title: "Session Log: Building the Balise SOS Demo"
-dcterms:version: "0.1.0"
+dcterms:version: "0.2.0"
 dc:creator: "Christopher Steel"
 dc:contributor: "Claude Opus 5.5 (Anthropic)"
 dc:description: "Start-to-finish record of building the Balise SOS demo: decisions, steps, problems fixed, results and open work."
@@ -18,6 +18,10 @@ sat:uuid: ""
 sat:version_at_creation: ""
 sat:migration_status: pre-sat
 sat:changelog:
+  - version: "0.2.0"
+    date: "2026-10-06"
+    author: "Christopher Steel"
+    notes: "Added the second pass: rebase onto the plan document, GitHub Actions replaced by local self-hosting per ADR-006, new signage-based theme with Atkinson Hyperlegible."
   - version: "0.1.0"
     date: "2026-10-06"
     author: "Christopher Steel"
@@ -26,7 +30,7 @@ sat:changelog:
 
 # Session Log: Building the Balise SOS Demo
 
-Version: 0.1.0
+Version: 0.2.0
 Status: Draft
 Style Guide: style-guide--technical-documentation-for-technologists
 
@@ -131,6 +135,21 @@ Recorded in `ROADMAP.md`: a web editing screen with Sveltia CMS; a French transl
 
 The GitHub App had no write access to the repository during this session, so the work was handed over as a git bundle to push by hand.
 
+## Second pass, same day: self-hosting and a new look
+
+**The plan document.** Meanwhile the owner pushed an initial commit holding `fr-ca/docs/saint-exemple-plan-v0.0.3.md`, a fictional municipal emergency plan following the provincial template, with a visibility on every block (public, internal, restricted) meant to compile into an external guide for residents and an internal guide for the emergency team. The demo commit was rebased onto it so history stays linear. Building the site from that plan is the obvious next step and is recorded on the roadmap.
+
+**No GitHub Actions.** The owner asked to avoid GitHub Actions, since they tie hosting to GitHub, and supplied the `deploy-local.sh` script used with the incus web container on the workstation, `flow.local`, and Caddy's local root certificate. The workflow was removed, the script placed in `en/docs/devops/balise/` with an `npm run deploy:local` wrapper, and the update address set to `https://flow.local/`. ADR-006 records the decision. The certificate was not committed, since it belongs to one machine.
+
+**Theme.** The first look, warm off-white with a red accent, was close to a common generated default and used red for reassurance as well as danger. The new look borrows from municipal signage: a navy header panel, the 911 line as a red band, red kept for danger and priority, amber for the copy-status line, which turns red once the copy is old. Procedure lists became rows on a signboard with the priority on the left edge, labelled in words. Emoji icons were dropped, since old systems render them as empty boxes. Type is Atkinson Hyperlegible, designed by the Braille Institute for low-vision readers, two Latin weights, about 35 KiB, stored with the site and falling back to system fonts. A dark scheme follows the device.
+
+Two layout problems were found in screenshots and fixed: the navigation sat inside the navy header and vanished, and a paragraph width rule shrank the demonstration notice to half the page.
+
+| Measure | 0.1.0 first pass | After this pass |
+|---------|------------------|-----------------|
+| Files stored by the service worker | 36, about 280 KiB | 39, about 320 KiB |
+| Offline zip | about 135 KiB | about 172 KiB |
+
 ## License
 
 This document, *Session Log: Building the Balise SOS Demo*, by **Christopher Steel**, with AI assistance from **Claude Opus 5.5 (Anthropic)**, is licensed under the [GNU General Public License v3.0 or later](https://www.gnu.org/licenses/gpl-3.0.html).
@@ -139,4 +158,5 @@ This document, *Session Log: Building the Balise SOS Demo*, by **Christopher Ste
 
 | Version | Status | Notes |
 |---------|--------|-------|
+| 0.2.0 | Draft | Added the second pass: rebase onto the plan document, GitHub Actions replaced by local self-hosting per ADR-006, new signage-based theme with Atkinson Hyperlegible. |
 | 0.1.0 | Draft | Initial draft. |

@@ -5,7 +5,6 @@ relation: urn:uuid:7299d2b8-a759-4aff-af8b-964460db12ad
 identifier: communicating-without-a-network
 order: 6
 priority: high
-icon: 📻
 keywords: ["radio", "phone", "mobile", "cell", "internet", "runner", "poster", "network"]
 responsible: Communications lead
 reviewed: 2026-09-15

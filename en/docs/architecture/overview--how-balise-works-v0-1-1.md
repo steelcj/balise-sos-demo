@@ -1,6 +1,6 @@
 ---
 dc:title: "Overview: How Balise Works"
-dcterms:version: "0.1.0"
+dcterms:version: "0.1.1"
 dc:creator: "Christopher Steel"
 dc:contributor: "Claude Opus 5.5 (Anthropic)"
 dc:description: "What the Balise demo is, how content becomes three kinds of offline copy, and where each piece lives."
@@ -18,6 +18,10 @@ sat:uuid: ""
 sat:version_at_creation: ""
 sat:migration_status: pre-sat
 sat:changelog:
+  - version: "0.1.1"
+    date: "2026-10-06"
+    author: "Christopher Steel"
+    notes: "Web copy now served from the local web container, flow.local, per ADR-006; new look described; repository map gains en/docs/devops/balise; sizes updated."
   - version: "0.1.0"
     date: "2026-10-06"
     author: "Christopher Steel"
@@ -26,7 +30,7 @@ sat:changelog:
 
 # Overview: How Balise Works
 
-Version: 0.1.0
+Version: 0.1.1
 Status: Draft
 Style Guide: style-guide--technical-documentation-for-technologists
 
@@ -50,7 +54,7 @@ The demo serves a fictional municipality, Saint-Démo-des-Neiges, with three sit
 flowchart TD
   A["Markdown procedures<br/>content/fr-ca and content/en-ca"] --> B["Eleventy build<br/>layouts, pairing by relation"]
   B --> C["Transform<br/>search capture, relative links"]
-  C --> D["_site folder<br/>about 280 KiB"]
+  C --> D["_site folder<br/>about 320 KiB"]
   D --> E["sw.js, manifest, version.js<br/>written after the build"]
   D --> F["Offline zip<br/>download/balise-sos-demo-version.zip"]
   E --> G["Web copy<br/>installed, updates itself"]
@@ -58,11 +62,11 @@ flowchart TD
   D --> I["Printed binder<br/>from the printable version page"]
 ```
 
-Text equivalent: markdown in two language folders goes through the Eleventy build, a transform captures search text and rewrites links, and the result is a folder of about 280 KiB. From that folder come three kinds of copy: a web copy that installs and updates itself, a zip that opens from disk, and a printed binder.
+Text equivalent: markdown in two language folders goes through the Eleventy build, a transform captures search text and rewrites links, and the result is a folder of about 320 KiB. From that folder come three kinds of copy: a web copy that installs and updates itself, a zip that opens from disk, and a printed binder.
 
 ## Three copies, one source
 
-**Web copy.** Served over HTTPS, here GitHub Pages. The first visit stores the whole site on the device; afterwards it opens with no network and refreshes itself whenever the network returns. See ADR-002.
+**Web copy.** Served over HTTPS, today from a web container on the operator's workstation, `flow.local`, see ADR-006. The first visit stores the whole site on the device; afterwards it opens with no network and refreshes itself whenever the network returns. See ADR-002.
 
 **File copy.** The zip, unzipped to a computer or USB key, opened by double-clicking `index.html`. Works on any browser, never evicted, never updates itself; it shows its age and can check whether a newer version exists. See ADR-002.
 
@@ -70,7 +74,7 @@ Text equivalent: markdown in two language folders goes through the Eleventy buil
 
 ## What a reader sees
 
-Each page carries a striped demonstration banner, the 911 line, navigation, a search box and, in the footer, a status line: which kind of copy this is, its version and build date, and a warning once it is more than 30 days old.
+Each page carries a demonstration notice, a navy header, the 911 line as a red band, navigation, a search box and, in the footer, an amber status line that turns red when the copy is old: which kind of copy this is, its version and build date, and a warning once it is more than 30 days old.
 
 Each procedure shows who is responsible, when it was last reviewed and its version, then sections of steps. With JavaScript, each step is a checkbox for the current session; nothing is saved, so a shared computer keeps no trace. Without JavaScript, everything still reads, and search explains that it needs scripts.
 
@@ -82,9 +86,10 @@ Each procedure shows who is responsible, when it was last reviewed and its versi
 | `_includes/layouts/` | Page, procedure, list, print and search layouts on one base |
 | `_data/` | Interface strings and navigation per locale |
 | `_11ty/` | Build modules: site settings, link rewriting, search index, offline shell, service worker template |
-| `assets/` | CSS for screen and print, the two scripts, the icon |
+| `assets/` | CSS for screen and print, the two scripts, the icon, the Atkinson Hyperlegible font |
 | `scripts/` | Clean, package the zip, check the output, draw icons |
 | `tests/` | Optional browser test of both offline modes |
+| `en/docs/devops/balise/` | Current copies of the local web setup, starting with `deploy-local.sh` |
 | `en/docs/` | This documentation: decisions, guides, process, shared house rules |
 
 ## License
@@ -114,4 +119,5 @@ This document, *Overview: How Balise Works*, by **Christopher Steel**, with AI a
 
 | Version | Status | Notes |
 |---------|--------|-------|
+| 0.1.1 | Draft | Web copy now served from the local web container, flow.local, per ADR-006; new look described; repository map gains en/docs/devops/balise; sizes updated. |
 | 0.1.0 | Draft | Initial draft. |

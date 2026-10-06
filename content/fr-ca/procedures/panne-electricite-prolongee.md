@@ -5,7 +5,6 @@ relation: urn:uuid:fa2d8989-a9e0-4a28-9108-06c58aac00fc
 identifier: panne-electricite-prolongee
 order: 2
 priority: high
-icon: ⚡
 keywords: ["électricité", "courant", "hydro", "génératrice", "monoxyde", "froid"]
 responsible: Direction des travaux publics
 reviewed: 2026-09-15

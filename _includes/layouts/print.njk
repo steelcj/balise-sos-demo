@@ -17,7 +17,11 @@ layout: layouts/base.njk
   <section class="procedure printed" id="{{ p.data.identifier }}">
     <h2>{{ p.data.title }}</h2>
     <p class="lede">{{ p.data.summary }}</p>
-    <p class="meta-line">{{ t.responsible }} : {{ p.data.responsible }} · {{ t.reviewed }} : {{ p.data.reviewed | isoDay }} · {{ t.version }} {{ p.data.docVersion }}</p>
+    <dl class="meta">
+      <div><dt>{{ t.responsible }}</dt><dd>{{ p.data.responsible }}</dd></div>
+      <div><dt>{{ t.reviewed }}</dt><dd>{{ p.data.reviewed | isoDay }}</dd></div>
+      <div><dt>{{ t.version }}</dt><dd>{{ p.data.docVersion }}</dd></div>
+    </dl>
     <div class="prose procedure-body demote">{{ p.content | safe }}</div>
   </section>
   {%- endfor %}

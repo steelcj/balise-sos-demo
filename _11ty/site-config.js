@@ -45,9 +45,12 @@ module.exports = {
   buildDate: buildDate.toISOString(),
   buildDay: buildDate.toISOString().slice(0, 10),
   // Where the hosted copy lives. A copy opened from disk asks this address
-  // for version.js when the reader presses "check for updates". Override
-  // with BALISE_PUBLIC_URL for a municipality's own host. Must end in "/".
-  publicUrl: process.env.BALISE_PUBLIC_URL || "https://steelcj.github.io/balise-sos-demo/",
+  // for version.js when the reader presses "check for updates". The default
+  // is the local web container on the workstation (flow.local, served by
+  // Caddy with its local certificate authority), see ADR-006. Override with
+  // BALISE_PUBLIC_URL for any other host, such as a future Vishpala server
+  // or a municipality's own. Must end in "/".
+  publicUrl: process.env.BALISE_PUBLIC_URL || "https://flow.local/",
   defaultLocale: "fr-ca",
   locales: ["fr-ca", "en-ca"],
   // A copy older than this many days shows a reminder to refresh it.

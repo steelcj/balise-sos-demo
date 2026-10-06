@@ -1,6 +1,6 @@
 ---
 dc:title: "ADR-002: Two Offline Delivery Modes From One Build"
-dcterms:version: "0.1.0"
+dcterms:version: "0.1.1"
 dc:creator: "Christopher Steel"
 dc:contributor: "Claude Opus 5.5 (Anthropic)"
 dc:description: "Why one build yields an installable web copy and a downloadable zip, and how each stays current."
@@ -18,6 +18,10 @@ sat:uuid: ""
 sat:version_at_creation: ""
 sat:migration_status: pre-sat
 sat:changelog:
+  - version: "0.1.1"
+    date: "2026-10-06"
+    author: "Christopher Steel"
+    notes: "Stored copy size updated to about 39 files and 320 KiB after the theme added the font."
   - version: "0.1.0"
     date: "2026-10-06"
     author: "Christopher Steel"
@@ -26,7 +30,7 @@ sat:changelog:
 
 # ADR-002: Two Offline Delivery Modes From One Build
 
-Version: 0.1.0
+Version: 0.1.1
 Status: Draft
 Style Guide: style-guide--technical-documentation-for-technologists
 
@@ -62,7 +66,7 @@ A downloaded copy does not update itself. It can only tell its reader that it is
 
 Everything the site does has to work from `file://`, which shaped two other decisions: relative file links (ADR-004) and the script-based search index (ADR-003).
 
-The service worker stores everything except the zip itself, about 36 files and 280 KiB, which is small enough for a phone on a weak connection.
+The service worker stores everything except the zip itself, about 39 files and 320 KiB, which is small enough for a phone on a weak connection.
 
 ## Alternatives considered
 
@@ -84,4 +88,5 @@ This document, *ADR-002: Two Offline Delivery Modes From One Build*, by **Christ
 
 | Version | Status | Notes |
 |---------|--------|-------|
+| 0.1.1 | Draft | Stored copy size updated to about 39 files and 320 KiB after the theme added the font. |
 | 0.1.0 | Draft | Initial draft. |

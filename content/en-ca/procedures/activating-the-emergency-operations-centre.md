@@ -5,7 +5,6 @@ relation: urn:uuid:70ba7264-1676-44f9-bdd4-58cd647d2b98
 identifier: activating-the-emergency-operations-centre
 order: 1
 priority: high
-icon: 🔔
 keywords: ["mobilization", "alert", "emergency", "disaster", "team", "EOC"]
 responsible: Municipal emergency management coordinator
 reviewed: 2026-09-15

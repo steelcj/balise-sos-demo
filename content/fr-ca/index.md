@@ -5,7 +5,7 @@ relation: urn:uuid:966bbe3b-ff02-499b-8223-98954b26e62f
 layout: layouts/list.njk
 kind: home
 ---
-> **Le réseau est tombé ?** Ce site continue de fonctionner. Tout ce qu’il contient, recherche comprise, est déjà sur cet appareil.
+<p class="notice"><strong>Le réseau est tombé ?</strong> Ce site continue de fonctionner. Tout ce qu’il contient, recherche comprise, est déjà sur cet appareil.</p>
 
 Choisissez la situation. Chaque procédure se lit en quelques minutes, se coche étape par étape et s’imprime proprement.
 

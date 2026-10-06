@@ -5,7 +5,6 @@ relation: urn:uuid:7299d2b8-a759-4aff-af8b-964460db12ad
 identifier: communiquer-sans-reseau
 order: 6
 priority: high
-icon: 📻
 keywords: ["radio", "téléphone", "cellulaire", "internet", "coursier", "affiche", "réseau"]
 responsible: Responsable des communications
 reviewed: 2026-09-15

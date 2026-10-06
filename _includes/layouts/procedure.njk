@@ -3,7 +3,7 @@ layout: layouts/base.njk
 ---
 {%- set t = i18n[locale] -%}
 <article class="procedure">
-  <p class="eyebrow"><a href="/{{ locale }}/procedures/">{{ t.sectionProcedures }}</a></p>
+  <p class="breadcrumb"><a href="/{{ locale }}/procedures/">{{ t.sectionProcedures }}</a></p>
   <h1>{{ title }}</h1>
   {%- if summary %}<p class="lede">{{ summary }}</p>{% endif %}
   <dl class="meta">

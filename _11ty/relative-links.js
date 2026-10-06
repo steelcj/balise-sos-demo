@@ -3,7 +3,7 @@
 // Rewrites root-relative links in built HTML into plain relative links
 // that name a file, so the same output works in three places without
 // change: opened from disk (file://), served from a domain root, and
-// served from a sub-path such as GitHub Pages' /balise-sos-demo/.
+// served from a sub-path such as /balise/ on a shared web server.
 //
 // Authors keep writing ordinary links, "/fr-ca/contacts/", in content and
 // templates. After rendering, this transform turns that into, for a page

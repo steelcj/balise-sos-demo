@@ -1,39 +1,78 @@
 /* Balise SOS, screen styles.
  *
- * Written for the conditions the site is used in: a tired person, a
- * phone at low battery, an old computer, poor light. So: system fonts
- * (nothing to download), strong contrast, large tap targets, one column,
- * no layout that depends on JavaScript, and a dark scheme that follows
- * the device setting (it also saves battery on OLED screens).
+ * The look borrows from what already works in an emergency: municipal
+ * signage (navy and white), the red of a stop sign kept for danger only,
+ * and the amber of a beacon for the one thing that should catch the eye,
+ * the line telling the reader what kind of copy they hold.
+ *
+ * Type is Atkinson Hyperlegible, drawn by the Braille Institute so that
+ * letters that look alike (I, l, 1; O, 0) stay distinct for low-vision
+ * readers. Two weights, Latin only, about 35 KiB, stored with the site
+ * like everything else. Systems that cannot load it fall back to their
+ * own sans-serif without any change in layout.
+ *
+ * One column, large tap targets, nothing that depends on JavaScript, and
+ * a dark scheme that follows the device (it also saves battery on OLED).
  */
 
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/atkinson-hyperlegible/atkinson-hyperlegible-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/atkinson-hyperlegible/atkinson-hyperlegible-latin-700-normal.woff2") format("woff2");
+}
+
 :root {
-  --paper: #fffdf7;
-  --ink: #1b1f24;
-  --muted: #4d5560;
-  --line: #d9d3c4;
-  --panel: #f4efe2;
-  --signal: #b3261e;
-  --signal-ink: #ffffff;
-  --link: #0b4f8a;
-  --focus: #f2a900;
-  --high: #fde8e6;
-  --radius: 10px;
-  --wrap: 46rem;
+  --navy: #14213d;
+  --navy-2: #22345c;
+  --paper: #ffffff;
+  --panel: #eef2f6;
+  --ink: #14213d;
+  --muted: #4a5568;
+  --line: #c9d2dc;
+  --stop: #c8102e;
+  --stop-ink: #ffffff;
+  --stop-wash: #fbe9ec;
+  --beacon: #ffb800;
+  --beacon-ink: #14213d;
+  --link: #1d4ed8;
+  --focus: #ffb800;
+  --wrap: 44rem;
+  --gutter: 16px;
+  --step: 1.125rem;
   color-scheme: light dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #121417;
-    --ink: #eceae4;
-    --muted: #b4b9c0;
-    --line: #353a41;
-    --panel: #1c2026;
-    --signal: #e5534b;
-    --signal-ink: #120606;
-    --link: #8cc4ff;
-    --high: #2b1715;
+    --navy: #0b1426;
+    --navy-2: #1b2a4a;
+    --paper: #0f1a2e;
+    --panel: #18253f;
+    --ink: #e8edf3;
+    --muted: #aab6c6;
+    --line: #2d3d5c;
+    --stop: #ff5468;
+    --stop-ink: #1a0509;
+    --stop-wash: #2a1520;
+    --link: #8db8ff;
+  }
+
+  button {
+    background: #2f4f8f;
+  }
+
+  button:hover {
+    background: #3b5fa8;
   }
 }
 
@@ -52,20 +91,25 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Liberation Sans", Arial, sans-serif;
-  font-size: 1.125rem;
+  font-family: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Liberation Sans", Arial, sans-serif;
+  font-size: var(--step);
   line-height: 1.55;
 }
 
 .wrap {
   max-width: var(--wrap);
   margin-inline: auto;
-  padding-inline: 16px;
+  padding-inline: var(--gutter);
 }
 
 a {
   color: var(--link);
-  text-underline-offset: 0.15em;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.08em;
+}
+
+a:hover {
+  text-decoration-thickness: 0.16em;
 }
 
 a:focus-visible,
@@ -80,10 +124,10 @@ main:focus-visible {
   position: absolute;
   left: 8px;
   top: -100px;
-  background: var(--ink);
-  color: var(--paper);
-  padding: 8px 12px;
-  border-radius: var(--radius);
+  background: var(--beacon);
+  color: var(--beacon-ink);
+  padding: 10px 14px;
+  font-weight: 700;
   z-index: 10;
 }
 
@@ -100,18 +144,22 @@ main:focus-visible {
   white-space: nowrap;
 }
 
+/* The demonstration notice: plain, small, impossible to miss. */
 .demo-banner {
+  max-width: none;
   margin: 0;
-  padding: 6px 16px;
+  padding: 6px var(--gutter);
   text-align: center;
-  font-size: 0.9rem;
-  background: repeating-linear-gradient(-45deg, var(--panel), var(--panel) 12px, transparent 12px, transparent 24px);
-  border-bottom: 1px solid var(--line);
+  font-size: 0.875rem;
+  background: var(--panel);
   color: var(--muted);
+  border-bottom: 1px solid var(--line);
 }
 
+/* Header: a navy sign panel. */
 .site-header {
-  border-bottom: 4px solid var(--signal);
+  background: var(--navy);
+  color: #ffffff;
 }
 
 .header-row {
@@ -119,15 +167,19 @@ main:focus-visible {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding-block: 12px 4px;
+  padding-block: 14px;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: var(--ink);
+  gap: 12px;
+  color: #ffffff;
   text-decoration: none;
+}
+
+.brand img {
+  border-radius: 9px;
 }
 
 .brand-text {
@@ -137,59 +189,86 @@ main:focus-visible {
 }
 
 .brand-text strong {
-  font-size: 1.25rem;
-  letter-spacing: 0.02em;
+  font-size: 1.3rem;
 }
 
 .brand-text span {
   font-size: 0.9rem;
-  color: var(--muted);
+  color: #c9d4e6;
 }
 
 .lang-switch {
-  font-weight: 600;
-  padding: 8px 12px;
-  border: 2px solid var(--line);
-  border-radius: var(--radius);
-  text-decoration: none;
+  color: #ffffff;
+  font-weight: 700;
+  padding: 8px 14px;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
+  border: 2px solid #5c6f96;
+  border-radius: 6px;
+  text-decoration: none;
 }
 
+.lang-switch:hover {
+  border-color: #ffffff;
+}
+
+/* The 911 line: the one red band, like the face of a stop sign. */
 .danger {
-  margin-block: 6px;
+  margin: 0;
+  background: var(--stop);
+  color: var(--stop-ink);
   font-weight: 700;
-  color: var(--signal);
+  font-size: 1.05rem;
+}
+
+.danger .wrap {
+  padding-block: 9px;
+}
+
+.danger strong {
+  font-size: 1.25rem;
+  letter-spacing: 0.02em;
+}
+
+/* Navigation and search, on paper below the sign. */
+.site-nav {
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
 }
 
 .site-nav ul {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 6px 0 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 14px;
+  gap: 0 18px;
 }
 
 .site-nav a {
-  display: inline-block;
-  padding-block: 8px;
+  display: inline-flex;
+  align-items: center;
   min-height: 44px;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+}
+
+.site-nav a:hover {
+  border-bottom-color: var(--line);
 }
 
 .site-nav a[aria-current="page"] {
-  color: var(--ink);
-  text-decoration-thickness: 3px;
-  text-decoration-color: var(--signal);
+  border-bottom-color: var(--beacon);
 }
 
 .search-mini,
 .search-row {
   display: flex;
   gap: 8px;
-  margin-block: 8px 12px;
+  margin-block: 10px 14px;
 }
 
 input[type="search"] {
@@ -198,122 +277,151 @@ input[type="search"] {
   font: inherit;
   padding: 10px 12px;
   border: 2px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: 6px;
   background: var(--paper);
   color: var(--ink);
   min-height: 48px;
 }
 
+input[type="search"]:focus {
+  border-color: var(--navy-2);
+}
+
 button {
   font: inherit;
   font-weight: 700;
-  padding: 10px 16px;
+  padding: 10px 18px;
   min-height: 48px;
   border: 0;
-  border-radius: var(--radius);
-  background: var(--signal);
-  color: var(--signal-ink);
+  border-radius: 6px;
+  background: var(--navy);
+  color: #ffffff;
   cursor: pointer;
 }
 
+button:hover {
+  background: var(--navy-2);
+}
+
+/* Content. Type scale from 1.125rem on a ratio near 1.25. */
 main {
-  padding-block: 20px 40px;
+  padding-block: 24px 48px;
 }
 
 h1 {
-  font-size: 1.9rem;
-  line-height: 1.2;
-  margin-block: 0.4em 0.5em;
+  font-size: 2.2rem;
+  line-height: 1.12;
+  margin-block: 0.25em 0.45em;
 }
 
 h2 {
   font-size: 1.4rem;
-  margin-block: 1.6em 0.5em;
-  padding-top: 0.6em;
-  border-top: 1px solid var(--line);
+  line-height: 1.25;
+  margin-block: 1.8em 0.5em;
 }
 
 h3 {
   font-size: 1.15rem;
-  margin-block: 1.2em 0.4em;
+  margin-block: 1.3em 0.4em;
 }
 
-.eyebrow {
+p,
+li {
+  max-width: 68ch;
+}
+
+.breadcrumb {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .lede {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
+  line-height: 1.45;
   color: var(--muted);
+  margin-top: 0;
 }
 
+/* Who owns a procedure and when it was checked: a small sign plate. */
 .meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 24px;
-  margin: 0 0 1em;
+  gap: 6px 28px;
+  margin: 0 0 1.4em;
   padding: 12px 16px;
+  border-left: 4px solid var(--navy-2);
   background: var(--panel);
-  border-radius: var(--radius);
   font-size: 1rem;
 }
 
 .meta dt {
-  font-weight: 700;
+  color: var(--muted);
 }
 
 .meta dd {
   margin: 0;
+  font-weight: 700;
 }
 
 .prose table {
   width: 100%;
   border-collapse: collapse;
   font-size: 1rem;
+  margin-block: 0.6em 1.2em;
 }
 
 .prose th,
 .prose td {
   text-align: left;
-  padding: 8px;
+  padding: 9px 8px;
   border-bottom: 1px solid var(--line);
   vertical-align: top;
 }
 
+.prose th {
+  border-bottom: 2px solid var(--ink);
+}
+
+/* Warnings and key messages: the red is kept for danger. */
 .prose blockquote {
-  margin: 1em 0;
+  margin: 1.2em 0;
   padding: 12px 16px;
-  border-left: 6px solid var(--signal);
-  background: var(--high);
-  border-radius: 0 var(--radius) var(--radius) 0;
+  border-left: 6px solid var(--stop);
+  background: var(--stop-wash);
 }
 
 .prose blockquote p {
   margin: 0.3em 0;
 }
 
-/* Checklists: every bullet in a procedure is a step to tick. Without
-   JavaScript they print as empty boxes; with it, they become real
-   checkboxes for the current session (nothing is stored). */
+/* Procedure steps are a sequence of actions to tick off. Each section
+   restarts the count. Without JavaScript they print as empty boxes; with
+   it, they become real checkboxes for this visit (nothing is saved). */
 .procedure-body ul {
   list-style: none;
   padding-left: 0;
+  margin-block: 0.4em 1em;
+  counter-reset: step;
 }
 
 .procedure-body ul > li {
   position: relative;
-  padding: 6px 0 6px 2.1em;
-  border-bottom: 1px dashed var(--line);
+  counter-increment: step;
+  padding: 9px 0 9px 2.4em;
+  border-bottom: 1px solid var(--line);
+}
+
+.procedure-body ul > li:first-child {
+  border-top: 1px solid var(--line);
 }
 
 .procedure-body ul > li::before {
   content: "";
   position: absolute;
-  left: 0.2em;
-  top: 0.55em;
-  width: 1.1em;
-  height: 1.1em;
+  left: 0.15em;
+  top: 0.68em;
+  width: 1.25em;
+  height: 1.25em;
   border: 2px solid var(--ink);
   border-radius: 3px;
 }
@@ -329,121 +437,171 @@ h3 {
 
 .procedure-body ul > li input[type="checkbox"] {
   position: absolute;
-  left: 0.15em;
-  top: 0.5em;
-  width: 1.3em;
-  height: 1.3em;
+  left: 0.1em;
+  top: 0.62em;
+  width: 1.4em;
+  height: 1.4em;
   margin: 0;
-  accent-color: var(--signal);
+  accent-color: var(--navy-2);
+  cursor: pointer;
 }
 
 .procedure-body ul > li.done > label {
   color: var(--muted);
   text-decoration: line-through;
+  text-decoration-thickness: 0.06em;
 }
 
-.cards {
+/* Lists of procedures: rows on a signboard, the priority on the left edge. */
+.signboard {
   list-style: none;
   padding: 0;
-  display: grid;
-  gap: 12px;
+  margin: 1.4em 0 0;
+  border-top: 2px solid var(--ink);
 }
 
-.card {
-  border: 2px solid var(--line);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  background: var(--paper);
+.signboard li {
+  max-width: none;
+  border-bottom: 1px solid var(--line);
+  border-left: 6px solid var(--navy-2);
+  padding: 14px 16px 14px 18px;
 }
 
-.card.priority-high {
-  border-color: var(--signal);
-  background: var(--high);
+.signboard li.priority-high {
+  border-left-color: var(--stop);
 }
 
-.card a {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 1.2rem;
+.signboard a {
+  font-size: 1.3rem;
   font-weight: 700;
-  min-height: 44px;
+  line-height: 1.25;
 }
 
-.card-icon {
-  font-size: 1.5rem;
-}
-
-.card p {
+.signboard p {
   margin: 4px 0 0;
   color: var(--muted);
-  font-size: 1rem;
+  font-size: 1.02rem;
+}
+
+.signboard .first {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--stop);
+  margin-bottom: 2px;
 }
 
 .notice {
   padding: 12px 16px;
   background: var(--panel);
-  border-radius: var(--radius);
+  border-left: 6px solid var(--beacon);
+}
+
+.search-full label {
+  font-weight: 700;
 }
 
 .search-results {
-  padding-left: 1.2em;
+  padding-left: 1.4em;
 }
 
 .search-results li {
-  margin-block: 14px;
+  margin-block: 16px;
 }
 
 .search-results a {
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
 }
 
 .search-results p {
-  margin: 2px 0;
+  margin: 3px 0;
   color: var(--muted);
 }
 
 .search-results mark {
-  background: var(--focus);
-  color: #1b1f24;
-  border-radius: 2px;
+  background: var(--beacon);
+  color: var(--beacon-ink);
+  padding: 0 1px;
 }
 
+/* Footer. The copy line is the beacon: amber when stored and current,
+   red when the copy is old. */
 .site-footer {
   border-top: 1px solid var(--line);
-  padding-block: 12px 24px;
+  padding-block: 18px 32px;
   font-size: 0.95rem;
   color: var(--muted);
 }
 
 .copy-status {
-  font-weight: 600;
+  display: inline-block;
+  margin: 0 0 10px;
+  padding: 6px 12px 6px 34px;
+  position: relative;
+  background: var(--beacon);
+  color: var(--beacon-ink);
+  font-weight: 700;
+  border-radius: 6px;
+}
+
+.copy-status::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: var(--beacon-ink);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.55);
 }
 
 .copy-status.stale {
-  color: var(--signal);
+  background: var(--stop);
+  color: var(--stop-ink);
+}
+
+.copy-status.stale::before {
+  background: var(--stop-ink);
 }
 
 .update-result {
-  font-weight: 600;
+  font-weight: 700;
+}
+
+/* The bilingual entry page. */
+.entry h1 {
+  font-size: 2rem;
 }
 
 .lang-choice {
   display: grid;
-  gap: 16px;
+  gap: 14px;
   margin-block: 24px;
 }
 
 .lang-choice a {
   display: block;
-  padding: 20px;
-  border: 3px solid var(--signal);
-  border-radius: var(--radius);
-  font-size: 1.5rem;
+  padding: 22px 20px;
+  background: var(--navy);
+  color: #ffffff;
+  font-size: 1.6rem;
   font-weight: 700;
   text-decoration: none;
-  text-align: center;
+  border-radius: 6px;
+}
+
+.lang-choice a:hover {
+  background: var(--navy-2);
+}
+
+.lang-choice small {
+  display: block;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #c9d4e6;
 }
 
 .toc ol {
@@ -461,11 +619,17 @@ h3 {
 }
 
 @media (min-width: 40rem) {
-  .cards {
+  .lang-choice {
     grid-template-columns: 1fr 1fr;
   }
 
-  .lang-choice {
-    grid-template-columns: 1fr 1fr;
+  h1 {
+    font-size: 2.6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
   }
 }

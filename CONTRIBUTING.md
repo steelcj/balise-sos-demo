@@ -4,8 +4,8 @@ Thank you for helping. Balise is used when things are already going wrong, so ch
 
 ## Before you change anything
 
-- Read the [overview](en/docs/architecture/overview--how-balise-works-v0-1-0.md) and the decision records under `en/docs/architecture/adrs/`
-- Content changes: follow the [editor guide](en/docs/guides/editor-guide--writing-and-updating-a-procedure-v0-1-0.md); every page needs its other-language partner
+- Read the [overview](en/docs/architecture/overview--how-balise-works-v0-1-1.md) and the decision records under `en/docs/architecture/adrs/`
+- Content changes: follow the [editor guide](en/docs/guides/editor-guide--writing-and-updating-a-procedure-v0-1-1.md); every page needs its other-language partner
 - Code changes: keep browser scripts in ES5, add no runtime dependency, and keep every feature working from `file://`
 
 ## Before you commit

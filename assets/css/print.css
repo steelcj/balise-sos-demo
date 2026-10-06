@@ -31,12 +31,29 @@ body {
   color: #000;
 }
 
+.site-header,
+.danger,
+.copy-status,
+.notice {
+  background: none !important;
+  color: #000 !important;
+}
+
 .site-header {
   border-bottom: 2pt solid #000;
 }
 
-.danger {
+.brand,
+.brand-text span {
   color: #000;
+}
+
+.danger {
+  border-bottom: 1pt solid #000;
+}
+
+.signboard li {
+  border-left-color: #000;
 }
 
 a {

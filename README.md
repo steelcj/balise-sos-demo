@@ -47,7 +47,7 @@ The fictional municipal plan this demo will be built from is in `fr-ca/docs/`.
 Start with the overview, then the guide for your role.
 
 - [Overview: How Balise Works](en/docs/architecture/overview--how-balise-works-v0-1-1.md)
-- [Operator Guide: Building, Checking and Publishing](en/docs/guides/operator-guide--building-checking-and-publishing-v0-2-0.md)
+- [Operator Guide: Building, Checking and Publishing](en/docs/guides/operator-guide--building-checking-and-publishing-v0-3-0.md)
 - [Editor Guide: Writing and Updating a Procedure](en/docs/guides/editor-guide--writing-and-updating-a-procedure-v0-1-1.md)
 - [Demo Script: Presenting Balise to a Municipality](en/docs/guides/demo-script--presenting-balise-to-a-municipality-v0-1-1.md)
 - [Commit and Versioning Workflow](en/docs/guides/devops/commit-and-versioning-workflow-v0-3-0.md)
@@ -61,7 +61,7 @@ Decision records:
 - [ADR-003: Search Index as a Plain Script](en/docs/architecture/adrs/adr-003-search-index-as-a-plain-script-v0-1-0.md)
 - [ADR-004: Relative File Links Everywhere](en/docs/architecture/adrs/adr-004-relative-file-links-everywhere-v0-1-1.md)
 - [ADR-005: Bilingual Pages Paired by Work Identifier](en/docs/architecture/adrs/adr-005-bilingual-pages-paired-by-work-identifier-v0-1-0.md)
-- [ADR-006: Self-Hosted Publishing Without GitHub Actions](en/docs/architecture/adrs/adr-006-self-hosted-publishing-without-github-actions-v0-1-0.md)
+- [ADR-006: Self-Hosted Publishing Without GitHub Actions](en/docs/architecture/adrs/adr-006-self-hosted-publishing-without-github-actions-v0-1-1.md)
 
 House rules for documentation are under `en/docs/automa/`, synced from [sat-doc-automa](https://github.com/steelcj/sat-doc-automa).
 

@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-06
+
 ### Changed
 
 - Publishing moved off GitHub: the GitHub Pages workflow is removed; `npm run deploy:local` publishes to the incus web container on `flow.local` with `en/docs/devops/balise/deploy-local.sh`; downloaded copies check `https://flow.local/` for updates (ADR-006)

@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- README: `npm run deploy:local` no longer shown as the way to publish the demo, since it would replace Balise at `https://flow.local/`; new section on where the demo runs, `https://sos-flow.local/`, and how to build and deploy it there; the browser test and the 8 known conformance findings noted; the versioning workflow and local web setup added to the documentation list
+
 ## [0.2.0] - 2026-10-06
 
 ### Changed

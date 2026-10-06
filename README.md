@@ -21,10 +21,24 @@ npm ci
 npm run build     # site in _site/, offline zip in _site/download/
 npm run check     # offline link check and markdown conformance
 npm start         # local preview with live reload
-npm run deploy:local   # publish to the incus web container on flow.local
+python3 tests/browser-smoke.py   # both offline modes in Chromium, needs Playwright
 ```
 
-Open `_site/index.html` straight from disk to see the file copy, or serve `_site/` to see the web copy. Publishing uses machines you control, not a hosting service; see ADR-006 and `en/docs/devops/balise/`.
+Open `_site/index.html` straight from disk to see the file copy, or serve `_site/` to see the web copy.
+
+`npm run check` currently reports 8 known em-dash findings in `en/docs/automa/ai-collaboration/examples/`, an upstream issue in the synced house rules; any other finding is a failure.
+
+## Where the demo runs
+
+The web copy is at `https://sos-flow.local/`, served by the incus web container on the operator's workstation, beside Balise itself at `https://flow.local/`. Publishing uses machines you control, not a hosting service; see ADR-006 and `en/docs/devops/balise/`. Build for the demo's address, so downloaded copies check it for updates, then deploy with the script directly:
+
+```bash
+BALISE_PUBLIC_URL=https://sos-flow.local/ npm run build
+npm run check
+sh en/docs/devops/balise/deploy-local.sh balise-sos-demo _site
+```
+
+`npm run deploy:local` deploys to `/srv/balise`, the folder behind `https://flow.local/`, and would replace Balise.
 
 The fictional municipal plan this demo will be built from is in `fr-ca/docs/`.
 
@@ -36,6 +50,8 @@ Start with the overview, then the guide for your role.
 - [Operator Guide: Building, Checking and Publishing](en/docs/guides/operator-guide--building-checking-and-publishing-v0-2-0.md)
 - [Editor Guide: Writing and Updating a Procedure](en/docs/guides/editor-guide--writing-and-updating-a-procedure-v0-1-1.md)
 - [Demo Script: Presenting Balise to a Municipality](en/docs/guides/demo-script--presenting-balise-to-a-municipality-v0-1-1.md)
+- [Commit and Versioning Workflow](en/docs/guides/devops/commit-and-versioning-workflow-v0-3-0.md)
+- [Balise local web setup](en/docs/devops/balise/README.md), the web container, Caddy and name publishing
 - [Session Log: Building the Balise SOS Demo](en/docs/process/sessions/2026-10-06--building-the-balise-sos-demo-v0-3-0.md), the start-to-finish record
 
 Decision records:

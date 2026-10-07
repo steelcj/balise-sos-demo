@@ -53,7 +53,7 @@ Start with the overview, then the guide for your role.
 - [Accessibility: Features, Checks and Next Steps](en/docs/accessibility/accessibility--features-checks-and-next-steps-v0-1-0.md)
 - [Commit and Versioning Workflow](en/docs/guides/devops/commit-and-versioning-workflow-v0-3-0.md)
 - [Balise local web setup](en/docs/devops/balise/README.md), the web container, Caddy and name publishing
-- [Session Log: Building the Balise SOS Demo](en/docs/process/sessions/2026-10-06--building-the-balise-sos-demo-v0-3-0.md), the start-to-finish record
+- [Session Log: Building the Balise SOS Demo](en/docs/process/sessions/2026-10-06--building-the-balise-sos-demo-v0-4-0.md), the start-to-finish record
 
 Decision records:
 
@@ -63,6 +63,7 @@ Decision records:
 - [ADR-004: Relative File Links Everywhere](en/docs/architecture/adrs/adr-004-relative-file-links-everywhere-v0-1-1.md)
 - [ADR-005: Bilingual Pages Paired by Work Identifier](en/docs/architecture/adrs/adr-005-bilingual-pages-paired-by-work-identifier-v0-1-0.md)
 - [ADR-006: Self-Hosted Publishing Without GitHub Actions](en/docs/architecture/adrs/adr-006-self-hosted-publishing-without-github-actions-v0-1-1.md)
+- [ADR-007: Connection Indicator and Section Submenus](en/docs/architecture/adrs/adr-007-connection-indicator-and-section-submenus-v0-1-0.md), proposed
 
 House rules for documentation are under `en/docs/automa/`, synced from [sat-doc-automa](https://github.com/steelcj/sat-doc-automa).
 

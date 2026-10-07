@@ -1,11 +1,11 @@
 ---
 dc:title: "Session Log: Building the Balise SOS Demo"
-dcterms:version: "0.3.0"
+dcterms:version: "0.4.0"
 dc:creator: "Christopher Steel"
 dc:contributor: "Claude Opus 5.5 (Anthropic)"
 dc:description: "Start-to-finish record of building the Balise SOS demo: decisions, steps, problems fixed, results and open work."
 dcterms:created: "2026-10-06"
-dcterms:modified: "2026-10-06"
+dcterms:modified: "2026-10-07"
 dc:format: "text/markdown"
 dc:language: "en"
 sat:language_bcp47: "en"
@@ -18,6 +18,10 @@ sat:uuid: ""
 sat:version_at_creation: ""
 sat:migration_status: pre-sat
 sat:changelog:
+  - version: "0.4.0"
+    date: "2026-10-07"
+    author: "Christopher Steel"
+    notes: "Added the fourth pass, the offline speed fix, release 0.2.0 and documentation, and the fifth pass on 2026-10-07, the connection indicator, navigation submenus, accessibility record, rename and release 0.3.0; bold labels in the third pass replaced by headings."
   - version: "0.3.0"
     date: "2026-10-06"
     author: "Christopher Steel"
@@ -34,7 +38,7 @@ sat:changelog:
 
 # Session Log: Building the Balise SOS Demo
 
-Version: 0.3.0
+Version: 0.4.0
 Status: Draft
 Style Guide: style-guide--technical-documentation-for-technologists
 
@@ -156,21 +160,37 @@ Two layout problems were found in screenshots and fixed: the navigation sat insi
 
 ## Third pass, same day: running the demo beside Balise 0.4.3
 
-**What was on the machine.** Node 18.19.1, npm 9.2.0, Python 3.12.3 and incus 7.0.1. The `web` container, Debian 13 with Caddy 2.11.6 from the Caddy stable apt repository, served Balise 0.4.3 from `/srv/balise` at `https://flow.local/`, through proxy devices for ports 80 and 443. The Caddyfile held one hardcoded site block. Two files, `/etc/caddy/sites/balise.caddy` and `/etc/caddy/snippets/static-site.caddy`, were never imported and had no effect; they were left in place.
+### What was on the machine
 
-**Build and check.** `npm ci`, `npm run build` and `npm run check` ran clean apart from the 8 known em-dash findings in `en/docs/automa/ai-collaboration/examples/`, which are upstream issues. Because of them `npm run check` still exits 1. One extra plain build ran by mistake while looking for warnings.
+Node 18.19.1, npm 9.2.0, Python 3.12.3 and incus 7.0.1. The `web` container, Debian 13 with Caddy 2.11.6 from the Caddy stable apt repository, served Balise 0.4.3 from `/srv/balise` at `https://flow.local/`, through proxy devices for ports 80 and 443. The Caddyfile held one hardcoded site block. Two files, `/etc/caddy/sites/balise.caddy` and `/etc/caddy/snippets/static-site.caddy`, were never imported and had no effect; they were left in place.
 
-**A separate site, not a replacement.** The owner chose to keep Balise 0.4.3 and serve the demo from its own folder, `/srv/balise-sos-demo`, with its own Caddy site block and a build whose `BALISE_PUBLIC_URL` names that address. `npm run deploy:local` was not used, since it targets `/srv/balise`; the script was called directly as `deploy-local.sh balise-sos-demo _site`.
+### Build and check
 
-**First address, flow.local:8443.** The first arrangement added a proxy device for port 8443 and a `flow.local:8443` block. It worked, since `flow.local` already resolves, but the owner preferred a name to a port.
+`npm ci`, `npm run build` and `npm run check` ran clean apart from the 8 known em-dash findings in `en/docs/automa/ai-collaboration/examples/`, which are upstream issues. Because of them `npm run check` still exits 1. One extra plain build ran by mistake while looking for warnings.
 
-**Second address, sos-flow.local.** With `tls internal`, Caddy issues each site name its own short-lived certificate signed by the same local root, so a new name needs no new trust on devices. The real cost of a new name is resolution. Avahi on the workstation announces only `flow.local`, and mDNS clients, Android in particular, resolve multi-label names such as `sos.flow.local` unreliably, so a single-label name was chosen. A systemd user unit, `avahi-alias-sos-flow.service`, publishes `sos-flow.local` at the LAN address `192.168.1.100`; a user unit was used because sudo needs a password on the workstation. The Caddy block was renamed, the 8443 device removed, and the demo rebuilt with `BALISE_PUBLIC_URL=https://sos-flow.local/` and redeployed. The Caddyfile was backed up in the container before each change.
+### A separate site, not a replacement
 
-**Certificate trust.** Verification with curl first failed against a root under `/root/.local/share/caddy/`; the running service, which runs as the `caddy` user, uses the root under `/var/lib/caddy/.local/share/caddy/`. Against that root both sites returned 200 with the certificate verified. The workstation's own system store does not trust the root yet, so browsers on it still warn. The root was kept in a scratch folder and not committed.
+The owner chose to keep Balise 0.4.3 and serve the demo from its own folder, `/srv/balise-sos-demo`, with its own Caddy site block and a build whose `BALISE_PUBLIC_URL` names that address. `npm run deploy:local` was not used, since it targets `/srv/balise`; the script was called directly as `deploy-local.sh balise-sos-demo _site`.
 
-**Saved to the repository.** Current copies of the Caddyfile, the container configuration with machine-specific keys removed, and the avahi unit are in `en/docs/devops/balise/`, with a README covering the sites, rebuild commands, name publishing and certificate trust.
+### First address, flow.local:8443
 
-**Browser test.** Playwright and Chromium were installed, with the owner's approval, into `~/.venvs/playwright` and `~/.cache/ms-playwright`, and `tests/browser-smoke.py` passed all 11 checks. The test serves `_site` from a local server, so it does not exercise the container.
+The first arrangement added a proxy device for port 8443 and a `flow.local:8443` block. It worked, since `flow.local` already resolves, but the owner preferred a name to a port.
+
+### Second address, sos-flow.local
+
+With `tls internal`, Caddy issues each site name its own short-lived certificate signed by the same local root, so a new name needs no new trust on devices. The real cost of a new name is resolution. Avahi on the workstation announces only `flow.local`, and mDNS clients, Android in particular, resolve multi-label names such as `sos.flow.local` unreliably, so a single-label name was chosen. A systemd user unit, `avahi-alias-sos-flow.service`, publishes `sos-flow.local` at the LAN address `192.168.1.100`; a user unit was used because sudo needs a password on the workstation. The Caddy block was renamed, the 8443 device removed, and the demo rebuilt with `BALISE_PUBLIC_URL=https://sos-flow.local/` and redeployed. The Caddyfile was backed up in the container before each change.
+
+### Certificate trust
+
+Verification with curl first failed against a root under `/root/.local/share/caddy/`; the running service, which runs as the `caddy` user, uses the root under `/var/lib/caddy/.local/share/caddy/`. Against that root both sites returned 200 with the certificate verified. The workstation's own system store does not trust the root yet, so browsers on it still warn. The root was kept in a scratch folder and not committed.
+
+### Saved to the repository
+
+Current copies of the Caddyfile, the container configuration with machine-specific keys removed, and the avahi unit are in `en/docs/devops/balise/`, with a README covering the sites, rebuild commands, name publishing and certificate trust.
+
+### Browser test
+
+Playwright and Chromium were installed, with the owner's approval, into `~/.venvs/playwright` and `~/.cache/ms-playwright`, and `tests/browser-smoke.py` passed all 11 checks. The test serves `_site` from a local server, so it does not exercise the container.
 
 | Measure | Result |
 |---------|--------|
@@ -184,6 +204,62 @@ Two layout problems were found in screenshots and fixed: the navigation sat insi
 
 Still open from this pass: `sos-flow.local` has not been tried on phones or other machines on the LAN; the name is published only while the operator is logged in, unless lingering is enabled; the unit names a fixed LAN address; the operator guide and ADR-006 still describe only `https://flow.local/`.
 
+## Fourth pass, same day: offline speed, release 0.2.0 and the documentation
+
+### Slow pages offline on an iPhone
+
+The owner found that switching languages offline on an iPhone was very slow. The service worker fetched every page network first with a four second limit; on a network that is up without reaching the server, or off the network where `.local` names cannot be found, the request does not fail at once, so every link, the language switch included, waited the full four seconds. The cause was likely rather than confirmed, since the phone's network state was not observed.
+
+Pages now come from the stored copy at once and refresh in the background, as Balise 0.4.3 already did. A page not yet stored keeps the time limit. The browser test gained a check in which the test server stalls on pages rather than refusing them, the behaviour of a half-up network; the language switch answered in 0.1 s. The check was not run against the old worker to show that it would have failed. ADR-002 went to 0.1.2.
+
+### Release 0.2.0
+
+The owner pointed out that `VERSION` had not moved. `cut-release.py minor` cut 0.2.0, the demo was rebuilt and redeployed, and the owner pushed the branch and, after a first attempt naming `v0.2.1`, the tag `v0.2.0`, then published the GitHub release.
+
+### The documentation brought in line
+
+The root README still listed `npm run deploy:local` as the way to publish the demo, which would now replace Balise 0.4.3. The README, the operator guide, 0.3.0, and ADR-006, 0.1.1 with a dated amendment, were brought in line with the demo's own site, name publishing and certificate trust. The trap itself remains: a plain build targets `https://flow.local/` and `deploy:local` targets `/srv/balise`; changing both defaults is on the roadmap.
+
+### Certificate trust
+
+Brave on the workstation warned on `https://sos-flow.local/`, because it reads the per-user certificate store, which did not hold Caddy's root, and `certutil` was not installed. The live root was copied outside the repository with its fingerprint, with import steps for Brave and a two-step install for iPhone. The recommended long-term fix, not yet made, is a root name-constrained to the two demo names, since Caddy's root as it stands can vouch for any site.
+
+## Fifth pass, 2026-10-07: connection indicator, navigation and accessibility
+
+### The request
+
+The owner asked for an online and offline indicator that uses few resources, or a button to check connectivity, with checks of services such as Microsoft 365 later; an explanation of how updating works; confirmation that the search box has a label, advice on accessibility checks and a document recording accessibility features and checking sites with APA citations; the "This copy" menu item renamed "Balise"; and dropdown submenus to reach procedures and sections directly.
+
+### Choices made with the owner
+
+The accessibility document and ADR-007 use the technical register. The updating explanation went into the overview, technically, and onto the Balise page, plainly, rather than into a new document. Submenus were given to Procedures, listing the procedures, and to Contacts and Balise, listing their sections. axe-core was added to the browser test as a pinned dev dependency.
+
+### Found before building
+
+Both search boxes already had labels. The update check had a real fault: the worker stored `version.js` and fell back to it, so an offline web copy reported "up to date". The amber focus ring measured 1.73:1 on white, below the 3:1 a focus indicator needs. Headings had no ids. The style guides named by CLAUDE.md are in sat-doc-automa, not in this repository, and CLAUDE.md was corrected.
+
+### What was built
+
+`version.js` is no longer stored or answered by the worker. The worker reports the result of each background page refresh to open pages, which drives a three-state indicator, Online, Offline or Network not checked, with no polling; pressing it checks the connection. The navigation gained disclosure submenus, with ids for section headings produced by `_11ty/headings.js` from each page's markdown. The page was renamed in both languages with every link, string and zip read-me. The focus ring is navy on light paper. ADR-007 records the indicator and submenu decisions, as proposed.
+
+### Problems found and fixed
+
+Nunjucks has no comma operator, so the submenu lists moved into a build filter. Ids added by markdown would have repeated on the printable version, so ids are added after rendering and the printable version is skipped. An absolutely positioned dropdown would have covered its own link on a phone, so narrow screens open the list inline. A `display` rule overrode the `hidden` attribute, so a rule now makes `hidden` win. In the browser test, a stalled request from the previous check reported "online" after the network was cut, and the expected text was English on a French page; both were test errors, not faults in the indicator.
+
+### Results
+
+| Measure | Result |
+|---------|--------|
+| Files stored by the service worker | 38, about 406 KiB, grown by the submenu links on every page |
+| Offline zip | 40 files, about 190 KiB |
+| Browser test | 26 of 26 checks passed |
+| axe-core 4.14.0 | 25 pages, light and dark schemes, no WCAG 2.2 A or AA violations |
+| Conformance | 8 known upstream findings only |
+
+### Release 0.3.0 and the records
+
+0.3.0 was cut, rebuilt and deployed to `https://sos-flow.local/`, and is tagged but not pushed. The browser test ran on the build before the release commit; only the version and build date differ. ROADMAP.md gained an entry for 2026-10-07 with what was decided, closed and left open. The owner chose to keep `.claude/logs` as a private scratch record, not committed.
+
 ## License
 
 This document, *Session Log: Building the Balise SOS Demo*, by **Christopher Steel**, with AI assistance from **Claude Opus 5.5 (Anthropic)**, is licensed under the [GNU General Public License v3.0 or later](https://www.gnu.org/licenses/gpl-3.0.html).
@@ -192,6 +268,7 @@ This document, *Session Log: Building the Balise SOS Demo*, by **Christopher Ste
 
 | Version | Status | Notes |
 |---------|--------|-------|
+| 0.4.0 | Draft | Added the fourth pass, the offline speed fix, release 0.2.0 and documentation, and the fifth pass on 2026-10-07, the connection indicator, navigation submenus, accessibility record, rename and release 0.3.0; bold labels in the third pass replaced by headings. |
 | 0.3.0 | Draft | Added the third pass: the demo deployed beside Balise 0.4.3 as its own site, first at flow.local:8443 then at sos-flow.local, with the container configuration saved in en/docs/devops/balise/. |
 | 0.2.0 | Draft | Added the second pass: rebase onto the plan document, GitHub Actions replaced by local self-hosting per ADR-006, new signage-based theme with Atkinson Hyperlegible. |
 | 0.1.0 | Draft | Initial draft. |

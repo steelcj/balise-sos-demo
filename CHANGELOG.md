@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- ADR-007, connection indicator and section submenus, proposed
+
+### Changed
+
+- ROADMAP.md: entry for 2026-10-07 with what was decided, closed and left open
+- Session log 0.4.0: fourth pass, the offline speed fix, release 0.2.0 and documentation, and fifth pass, the connection indicator, navigation, accessibility record and release 0.3.0
+
 ## [0.3.0] - 2026-10-07
 
 ### Added

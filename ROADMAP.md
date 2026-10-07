@@ -23,6 +23,7 @@ Running record of decisions and open work for the Balise SOS demo, newest entry 
 ### Open work
 
 - Push 0.3.0: `git push && git push origin v0.3.0`
+- Move to a production DigitalOcean droplet following the migration guide in `en/docs/guides/devops/`: first the repository changes it lists, then the droplet, staging at `stage.vishpala.com` and production at `balise.vishpala.com`, then ADR-008
 - Test `https://sos-flow.local/` on an iPhone and an Android phone: the indicator, the submenus, and switching languages offline
 - Accept, amend or reject ADR-007
 - Review *Accessibility: Features, Checks and Next Steps* with the owner, section by section, as the technical style guide asks

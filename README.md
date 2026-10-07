@@ -51,6 +51,7 @@ Start with the overview, then the guide for your role.
 - [Editor Guide: Writing and Updating a Procedure](en/docs/guides/editor-guide--writing-and-updating-a-procedure-v0-1-1.md)
 - [Demo Script: Presenting Balise to a Municipality](en/docs/guides/demo-script--presenting-balise-to-a-municipality-v0-1-2.md)
 - [Accessibility: Features, Checks and Next Steps](en/docs/accessibility/accessibility--features-checks-and-next-steps-v0-1-0.md)
+- [Migration Guide: Balise and Its Testing on a Production DigitalOcean Droplet](en/docs/guides/devops/migration-guide--balise-and-its-testing-on-a-production-digitalocean-droplet-v0-1-0.md), not yet carried out
 - [Commit and Versioning Workflow](en/docs/guides/devops/commit-and-versioning-workflow-v0-3-0.md)
 - [Balise local web setup](en/docs/devops/balise/README.md), the web container, Caddy and name publishing
 - [Session Log: Building the Balise SOS Demo](en/docs/process/sessions/2026-10-06--building-the-balise-sos-demo-v0-4-0.md), the start-to-finish record

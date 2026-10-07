@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Added
 
 - ADR-007, connection indicator and section submenus, proposed
+- Migration guide for moving Balise and its testing to a production DigitalOcean droplet at `balise.vishpala.com`, with staging at `stage.vishpala.com`; a plan, not yet carried out
 
 ### Changed
 

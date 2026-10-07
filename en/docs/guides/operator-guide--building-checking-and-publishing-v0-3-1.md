@@ -1,11 +1,11 @@
 ---
 dc:title: "Operator Guide: Building, Checking and Publishing"
-dcterms:version: "0.3.0"
+dcterms:version: "0.3.1"
 dc:creator: "Christopher Steel"
 dc:contributor: "Claude Opus 5.5 (Anthropic)"
 dc:description: "Commands and steps to build Balise, check its offline guarantees, publish it, and cut a version."
 dcterms:created: "2026-10-06"
-dcterms:modified: "2026-10-06"
+dcterms:modified: "2026-10-07"
 dc:format: "text/markdown"
 dc:language: "en"
 sat:language_bcp47: "en"
@@ -18,6 +18,10 @@ sat:uuid: ""
 sat:version_at_creation: ""
 sat:migration_status: pre-sat
 sat:changelog:
+  - version: "0.3.1"
+    date: "2026-10-07"
+    author: "Christopher Steel"
+    notes: "The This copy page is now the Balise page; the browser test also checks the navigation, the online/offline indicator and accessibility with axe-core, installed by npm ci."
   - version: "0.3.0"
     date: "2026-10-06"
     author: "Christopher Steel"
@@ -34,7 +38,7 @@ sat:changelog:
 
 # Operator Guide: Building, Checking and Publishing
 
-Version: 0.3.0
+Version: 0.3.1
 Status: Draft
 Style Guide: style-guide--technical-documentation-for-technologists
 
@@ -81,7 +85,7 @@ This runs `scripts/check-site.js`, which fails on any root link left in the outp
 
 The conformance check currently reports 8 em-dash findings in `en/docs/automa/ai-collaboration/examples/`. They are known issues in the house rules synced from upstream, and they make `npm run check` exit 1. Any other finding is a real failure.
 
-The browser test exercises both offline modes in Chromium. It cuts the network after the service worker has installed, and it also stalls the network, the way a phone on Wi-Fi with no working connection behaves, and requires the language switch to answer from storage within 1.5 seconds:
+The browser test exercises both offline modes in Chromium. It cuts the network after the service worker has installed, and it also stalls the network, the way a phone on Wi-Fi with no working connection behaves, and requires the language switch to answer from storage within 1.5 seconds. It also checks the navigation submenus from the keyboard, the online/offline indicator, and every page with axe-core against the WCAG 2.2 A and AA rules in light and dark schemes; axe-core is a pinned dev dependency, installed by `npm ci`. See *Accessibility: Features, Checks and Next Steps* in `en/docs/accessibility/`:
 
 ```bash
 python3 tests/browser-smoke.py
@@ -142,7 +146,7 @@ No server-side code is needed. The service worker requires HTTPS, except on `loc
 
 ## Distribute the file copy
 
-The zip is at `_site/download/` and linked from the "This copy" page. Put it on each municipal computer and on a USB key in each site's emergency binder. A synchronizing tool between the three sites can carry the unzipped folder instead; it is exactly the content of the zip.
+The zip is at `_site/download/` and linked from the Balise page. Put it on each municipal computer and on a USB key in each site's emergency binder. A synchronizing tool between the three sites can carry the unzipped folder instead; it is exactly the content of the zip.
 
 ## Cut a version
 
@@ -168,6 +172,7 @@ This document, *Operator Guide: Building, Checking and Publishing*, by **Christo
 
 | Version | Status | Notes |
 |---------|--------|-------|
+| 0.3.1 | Draft | The This copy page is now the Balise page; the browser test also checks the navigation, the online/offline indicator and accessibility with axe-core, installed by npm ci. |
 | 0.3.0 | Draft | Publishing rewritten for two sites in the web container: the demo at https://sos-flow.local/ deployed with the script directly, deploy:local kept for Balise at https://flow.local/; name publishing and certificate trust on Brave and iPhone; known conformance findings and the stalled-network browser check; console sample updated. |
 | 0.2.0 | Draft | GitHub Pages and its workflow replaced by deployment to the local incus web container with deploy-local.sh, per ADR-006; certificate trust and update address explained. |
 | 0.1.0 | Draft | Initial draft. |

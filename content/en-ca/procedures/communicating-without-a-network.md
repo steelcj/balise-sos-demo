@@ -36,5 +36,5 @@ docVersion: "1.1"
 
 ## When the network returns
 
-- Update this copy of Balise on every device, see [This copy](/en-ca/this-copy/)
+- Update this copy of Balise on every device, see [Balise](/en-ca/balise/)
 - Check that every written message has been copied into the log

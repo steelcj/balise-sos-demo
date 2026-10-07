@@ -6,7 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- Online/offline indicator in the header of every page: Online, Offline or Network not checked, in words, learned from the service worker's background page refreshes and the browser's online and offline events, with no polling; pressing it checks the connection
+- Dropdown submenus in the main navigation, following the disclosure pattern: Procedures lists every procedure, Contacts and Balise list their page sections
+- Ids on every page's section headings, from `_11ty/headings.js`, so sections can be linked to
+- Accessibility: Features, Checks and Next Steps, a new document in `en/docs/accessibility/`
+- The browser test checks the submenus from the keyboard, the indicator, and every page with axe-core 4.14.0 (pinned dev dependency) against WCAG 2.2 A and AA in light and dark schemes
+
+### Fixed
+
+- An offline web copy reported "up to date" from its own stored `version.js`; `version.js` is no longer stored or answered by the service worker
+- The amber focus ring had 1.73:1 contrast on white paper, below the 3:1 WCAG 1.4.11 asks for; it is now navy on light paper and stays amber on dark paper and in the header
+
 ### Changed
+
+- "This copy" page renamed "Balise" in both languages, at `/en-ca/balise/` and `/fr-ca/balise/`, with every link, string and zip read-me updated; the page now explains how updating works and what the indicator means, with real subheadings in place of bold labels
+- Overview 0.2.0: how updating works, the indicator and a design for checking other services later; ADR-002 0.1.3, operator guide 0.3.1 and demo script 0.1.2 updated for the rename and the changes above
+- CLAUDE.md points to the style guides in sat-doc-automa, where they are
 
 - README: `npm run deploy:local` no longer shown as the way to publish the demo, since it would replace Balise at `https://flow.local/`; new section on where the demo runs, `https://sos-flow.local/`, and how to build and deploy it there; the browser test and the 8 known conformance findings noted; the versioning workflow and local web setup added to the documentation list
 - Operator guide 0.3.0 and ADR-006 0.1.1: publishing described for the demo's own site at `https://sos-flow.local/`, with name publishing and certificate trust; `npm run deploy:local` kept for Balise at `https://flow.local/`

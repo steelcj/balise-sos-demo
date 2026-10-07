@@ -45,7 +45,9 @@
   --beacon: #ffb800;
   --beacon-ink: #14213d;
   --link: #1d4ed8;
-  --focus: #ffb800;
+  /* Focus ring: navy on light paper (amber there is only 1.7:1, below the
+     3:1 WCAG 1.4.11 asks for), amber on dark paper and in the header. */
+  --focus: #14213d;
   --wrap: 44rem;
   --gutter: 16px;
   --step: 1.125rem;
@@ -65,6 +67,7 @@
     --stop-ink: #1a0509;
     --stop-wash: #2a1520;
     --link: #8db8ff;
+    --focus: #ffb800;
   }
 
   button {
@@ -80,6 +83,11 @@
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+/* The hidden attribute must win over any display rule below. */
+[hidden] {
+  display: none !important;
 }
 
 html {
@@ -118,6 +126,10 @@ input:focus-visible,
 main:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
+}
+
+.site-header :focus-visible {
+  outline-color: var(--beacon);
 }
 
 .skip {
@@ -213,6 +225,66 @@ main:focus-visible {
   border-color: #ffffff;
 }
 
+/* Header tools: the connection indicator and the language switch. They
+   wrap under the brand on a narrow phone rather than squeeze it. */
+.header-row {
+  flex-wrap: wrap;
+}
+
+.header-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Connection indicator. A button: pressing it checks the connection. The
+   state is in the words; the dot only repeats it. */
+.net-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 12px;
+  background: transparent;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: 2px solid #5c6f96;
+  border-radius: 6px;
+}
+
+.net-status:hover {
+  background: var(--navy-2);
+  border-color: #ffffff;
+}
+
+.net-status::before {
+  content: "";
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+}
+
+.net-status[data-state="online"]::before {
+  background: #3ddc84;
+  border-color: #3ddc84;
+}
+
+.net-status[data-state="offline"]::before {
+  background: transparent;
+  border-color: #ffffff;
+  border-style: dashed;
+}
+
+.net-status[data-state="unknown"]::before,
+.net-status[data-state="checking"]::before {
+  background: #c9d4e6;
+  border-color: #c9d4e6;
+}
+
 /* The 911 line: the one red band, like the face of a stop sign. */
 .danger {
   margin: 0;
@@ -262,6 +334,91 @@ main:focus-visible {
 
 .site-nav a[aria-current="page"] {
   border-bottom-color: var(--beacon);
+}
+
+/* Dropdown submenus, a disclosure pattern: the item stays a link to its
+   page, and a separate button beside it opens the list. Without
+   JavaScript the button and the lists stay hidden and every page is
+   still one link away. */
+.site-nav .has-sub {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* On a phone an open list takes the full row and pushes the page down,
+   so it can never run off the screen. */
+.site-nav .has-sub.is-open {
+  flex-basis: 100%;
+}
+
+.sub-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  margin-left: 2px;
+  background: transparent;
+  color: var(--ink);
+  border-radius: 6px;
+}
+
+.sub-toggle:hover {
+  background: var(--panel);
+}
+
+/* A chevron drawn in CSS, so it never depends on a font having the glyph. */
+.sub-toggle::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-right: 3px solid currentColor;
+  border-bottom: 3px solid currentColor;
+  transform: translateY(-3px) rotate(45deg);
+}
+
+.sub-toggle[aria-expanded="true"]::after {
+  transform: translateY(2px) rotate(-135deg);
+}
+
+.site-nav .sub {
+  display: none;
+  flex-basis: 100%;
+  margin: 0 0 10px;
+  padding: 6px 0;
+  list-style: none;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.site-nav .sub.open {
+  display: block;
+}
+
+.site-nav .sub li {
+  max-width: none;
+}
+
+.site-nav .sub a {
+  display: flex;
+  width: 100%;
+  padding: 8px 14px;
+  font-weight: 400;
+  border-bottom: 0;
+  line-height: 1.3;
+}
+
+.site-nav .sub a:hover,
+.site-nav .sub a[aria-current="page"] {
+  background: var(--panel);
+}
+
+.site-nav .sub a[aria-current="page"] {
+  font-weight: 700;
 }
 
 .search-mini,
@@ -621,6 +778,28 @@ li {
 @media (min-width: 40rem) {
   .lang-choice {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .site-nav .has-sub {
+    position: relative;
+  }
+
+  .site-nav .has-sub.is-open {
+    flex-basis: auto;
+  }
+
+  .site-nav .sub {
+    position: absolute;
+    z-index: 5;
+    top: 100%;
+    left: 0;
+    min-width: 19rem;
+    margin: 0;
+  }
+
+  .site-nav .has-sub:last-child .sub {
+    left: auto;
+    right: 0;
   }
 
   h1 {

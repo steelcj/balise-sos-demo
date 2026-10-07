@@ -36,5 +36,5 @@ docVersion: "1.1"
 
 ## Quand le réseau revient
 
-- Mettre à jour cette copie de Balise sur chaque appareil, voir [Cette copie](/fr-ca/cette-copie/)
+- Mettre à jour cette copie de Balise sur chaque appareil, voir [Balise](/fr-ca/balise/)
 - Vérifier que tous les messages écrits ont été copiés au journal

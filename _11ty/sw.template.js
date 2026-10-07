@@ -7,8 +7,12 @@
  *    network in the background, so a page never waits on a network that is
  *    down or half-up. A page not stored yet is asked from the network, with
  *    a short time limit.
- *  - version.js is asked from the network first, since it answers "is there
- *    something newer?".
+ *  - version.js is never stored and never answered by the worker: it says
+ *    whether a newer version exists and whether the server is reachable,
+ *    and a stored copy would answer both wrongly when offline.
+ *  - Each background page refresh tells open pages whether the network
+ *    answered, which drives the online/offline indicator without a single
+ *    extra request.
  *  - Everything else (styles, scripts, the search index) is served from the
  *    stored copy.
  *  - When the site changes, the cache name changes, the browser installs a
@@ -74,17 +78,21 @@ async function fromCache(request) {
   return undefined;
 }
 
-async function networkFirst(request) {
-  try {
-    const response = await withTimeout(fetch(request), NETWORK_TIMEOUT_MS);
-    storePage(request, response.clone());
-    return response;
-  } catch (_) {
-    const cached = await fromCache(request);
-    if (cached) return cached;
-    return (await fromCache(new Request(new URL("index.html", BASE).href))) || Response.error();
-  }
+// Whether the network last answered a page refresh, for the indicator.
+let lastNetwork = null;
+
+async function reportNetwork(ok) {
+  lastNetwork = ok;
+  const pages = await self.clients.matchAll({ type: "window" });
+  for (const page of pages) page.postMessage({ type: "balise-network", ok });
 }
+
+// A page that opens before its refresh finishes asks for the last result.
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "balise-network?" && lastNetwork !== null && event.source) {
+    event.source.postMessage({ type: "balise-network", ok: lastNetwork });
+  }
+});
 
 // Store a good page response under its .../index.html key. Redirected
 // responses are not stored: Safari refuses them for a navigation.
@@ -100,9 +108,18 @@ async function storePage(request, response) {
 // Pages: answer from the store at once, refresh it in the background.
 async function storedThenRefresh(event, request) {
   const refresh = fetch(request).then(
-    (response) => storePage(request, response.clone()).then(() => response),
-    () => undefined
+    (response) => {
+      reportNetwork(true);
+      return storePage(request, response.clone()).then(() => response);
+    },
+    () => {
+      reportNetwork(false);
+      return undefined;
+    }
   );
+  // A network that neither answers nor fails within the limit counts as
+  // offline until it does answer.
+  withTimeout(refresh, NETWORK_TIMEOUT_MS).catch(() => reportNetwork(false));
   const cached = await fromCache(request);
   if (cached) {
     event.waitUntil(refresh);
@@ -127,10 +144,9 @@ self.addEventListener("fetch", (event) => {
   if (!request.url.startsWith(BASE)) return;
   // The offline zip is large and is not stored; let it go straight to the network.
   if (new URL(request.url).pathname.includes("/download/")) return;
-  // version.js answers "is there something newer?", so it must not come from the store first.
-  if (new URL(request.url).pathname.endsWith("/version.js")) {
-    event.respondWith(networkFirst(request));
-  } else if (request.mode === "navigate") {
+  // version.js goes straight to the network, see the note at the top.
+  if (new URL(request.url).pathname.endsWith("/version.js")) return;
+  if (request.mode === "navigate") {
     event.respondWith(storedThenRefresh(event, request));
   } else {
     event.respondWith(cacheFirst(request));

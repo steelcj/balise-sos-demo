@@ -19,8 +19,9 @@ const path = require("node:path");
 const crypto = require("node:crypto");
 
 // Kept out of the stored copy: the offline zip (large, and pointless to
-// store inside a site that is already stored) and the worker itself.
-const EXCLUDE = [/^download\//, /^sw\.js$/];
+// store inside a site that is already stored), the worker itself, and
+// version.js, which must always come from the network.
+const EXCLUDE = [/^download\//, /^sw\.js$/, /^version\.js$/];
 
 function listFiles(dir, base = dir) {
   const out = [];

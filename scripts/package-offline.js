@@ -31,7 +31,7 @@ const notes = {
     "Aucune connexion Internet n'est nécessaire, la recherche comprise.",
     "",
     "Pour mettre à jour : quand le réseau fonctionne, ouvrez la page",
-    "« Cette copie » et appuyez sur « Vérifier les mises à jour ».",
+    "« Balise » et appuyez sur « Vérifier les mises à jour ».",
     "",
   ].join("\r\n"),
   "READ-ME.txt": [
@@ -41,7 +41,7 @@ const notes = {
     "To open: double-click the index.html file in this folder.",
     "No Internet connection is needed, search included.",
     "",
-    "To update: when the network works, open the \"This copy\" page",
+    "To update: when the network works, open the \"Balise\" page",
     "and press \"Check for updates\".",
     "",
   ].join("\r\n"),

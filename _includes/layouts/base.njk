@@ -35,11 +35,15 @@
         <img src="/assets/img/balise-icon.svg" alt="" width="40" height="40">
         <span class="brand-text"><strong>{{ site.name }}</strong><span>{{ site.municipality }}</span></span>
       </a>
+      <div class="header-tools">
+      <button type="button" class="net-status" id="net-status" data-state="unknown" hidden><span class="net-text">{{ t.netUnknown }}</span><span class="visually-hidden">. {{ t.netCheck }}</span></button>
+      <span class="visually-hidden" id="net-live" aria-live="polite"></span>
       {%- if otherPage %}
       <a class="lang-switch" href="{{ otherPage.url }}" hreflang="{{ i18n[other].langTag }}" lang="{{ i18n[other].langTag }}">{{ t.otherLanguage }}</a>
       {%- else %}
       <a class="lang-switch" href="/{{ other }}/" hreflang="{{ i18n[other].langTag }}" lang="{{ i18n[other].langTag }}" title="{{ t.otherLanguageMissing }}">{{ t.otherLanguage }}</a>
       {%- endif %}
+      </div>
     </div>
     <div class="danger"><p class="wrap">{{ t.danger | safe }}</p></div>
   </header>
@@ -47,7 +51,19 @@
     <div class="wrap">
       <ul>
         {%- for item in nav[locale] %}
-        <li><a href="{{ item.url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.label }}</a></li>
+        {%- set subId = "sub-" + loop.index %}
+        {%- set subLinks = item | subLinks(locale, collections) %}
+        <li{% if subLinks.length %} class="has-sub"{% endif %}>
+          <a href="{{ item.url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.label }}</a>
+          {%- if subLinks.length %}
+          <button type="button" class="sub-toggle" aria-expanded="false" aria-controls="{{ subId }}" hidden><span class="visually-hidden">{{ t.subMenu | replace("{label}", item.label) }}</span></button>
+          <ul class="sub" id="{{ subId }}">
+            {%- for link in subLinks %}
+            <li><a href="{{ link.url }}"{% if page.url == link.url %} aria-current="page"{% endif %}>{{ link.label }}</a></li>
+            {%- endfor %}
+          </ul>
+          {%- endif %}
+        </li>
         {%- endfor %}
       </ul>
       <form class="search-mini" role="search" action="{{ nav.search[locale] }}" method="get">

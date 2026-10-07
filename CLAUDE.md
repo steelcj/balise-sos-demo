@@ -12,7 +12,7 @@ Read this before starting any work.
 
 ## Style guides
 
-- Style guides are defined in `en/docs/guides/style-guides/`.
+- Style guides are defined in sat-doc-automa, under `en/docs/guides/style-guides/` there; they are not synced into this repository.
 - Every document names its governing guide on the `Style Guide:` line in its version block.
 - Follow the guide the document names. When editing, the document's declared guide wins.
 - When creating a new document, ask which register applies, technical or plain language, and record the choice on the `Style Guide:` line.

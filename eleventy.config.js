@@ -9,6 +9,8 @@
 //   3. A per-locale search index written as a plain script. ADR-003.
 //   4. A service worker, manifest and version file for the hosted copy,
 //      written after the build. ADR-002.
+//   5. Ids on section headings, and the section lists the main navigation
+//      offers as submenus.
 //
 // The offline zip is made afterwards by scripts/package-offline.js.
 
@@ -16,6 +18,7 @@ const site = require("./_11ty/site-config.js");
 const links = require("./_11ty/relative-links.js");
 const searchIndex = require("./_11ty/search-index.js");
 const offlineShell = require("./_11ty/offline-shell.js");
+const headings = require("./_11ty/headings.js");
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addGlobalData("site", site);
@@ -42,10 +45,32 @@ module.exports = function (eleventyConfig) {
       .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999) || String(a.data.title).localeCompare(String(b.data.title), locale))
   );
 
+  // Links for a navigation item's submenu, see _data/nav.js: every
+  // procedure of the locale, or the item's own page sections.
+  eleventyConfig.addFilter("subLinks", (item, locale, collections) => {
+    if (item.submenu === "procedures") {
+      return (collections.procedures || [])
+        .filter((p) => p.data.locale === locale)
+        .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999) || String(a.data.title).localeCompare(String(b.data.title), locale))
+        .map((p) => ({ url: p.url, label: p.data.title }));
+    }
+    if (item.submenu === "sections") {
+      return ((collections.sectionsByUrl || {})[item.url] || []).map((sec) => ({ url: `${item.url}#${sec.id}`, label: sec.label }));
+    }
+    return [];
+  });
+
   // Every procedure, across locales.
   eleventyConfig.addCollection("procedures", (api) =>
     api.getAll().filter((item) => item.data.kind === "procedure")
   );
+
+  // Section headings of every page, by URL: url -> [{ id, label }].
+  eleventyConfig.addCollection("sectionsByUrl", (api) => {
+    const byUrl = {};
+    for (const item of api.getAll()) byUrl[item.url] = headings.sections(item.inputPath);
+    return byUrl;
+  });
 
   // Pages grouped by the Work they express: relation -> { locale -> page }.
   eleventyConfig.addCollection("byWork", (api) => {
@@ -72,11 +97,15 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addTransform("balise-offline", function (content) {
     const out = this.page.outputPath;
     if (!out || !out.endsWith(".html")) return content;
+    content = headings.addIds(content, this.page.inputPath, this.page.url);
     searchIndex.collect({ url: this.page.url, html: content });
     return links.rewrite(content, this.page.url);
   });
 
-  eleventyConfig.on("eleventy.before", () => searchIndex.reset());
+  eleventyConfig.on("eleventy.before", () => {
+    searchIndex.reset();
+    headings.reset();
+  });
 
   eleventyConfig.on("eleventy.after", ({ dir }) => {
     for (const s of searchIndex.write(dir.output)) {

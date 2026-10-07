@@ -21,7 +21,7 @@ npm ci
 npm run build     # site in _site/, offline zip in _site/download/
 npm run check     # offline link check and markdown conformance
 npm start         # local preview with live reload
-python3 tests/browser-smoke.py   # both offline modes in Chromium, needs Playwright
+python3 tests/browser-smoke.py   # offline modes, navigation, indicator and axe-core checks in Chromium, needs Playwright
 ```
 
 Open `_site/index.html` straight from disk to see the file copy, or serve `_site/` to see the web copy.
@@ -46,10 +46,11 @@ The fictional municipal plan this demo will be built from is in `fr-ca/docs/`.
 
 Start with the overview, then the guide for your role.
 
-- [Overview: How Balise Works](en/docs/architecture/overview--how-balise-works-v0-1-1.md)
-- [Operator Guide: Building, Checking and Publishing](en/docs/guides/operator-guide--building-checking-and-publishing-v0-3-0.md)
+- [Overview: How Balise Works](en/docs/architecture/overview--how-balise-works-v0-2-0.md)
+- [Operator Guide: Building, Checking and Publishing](en/docs/guides/operator-guide--building-checking-and-publishing-v0-3-1.md)
 - [Editor Guide: Writing and Updating a Procedure](en/docs/guides/editor-guide--writing-and-updating-a-procedure-v0-1-1.md)
-- [Demo Script: Presenting Balise to a Municipality](en/docs/guides/demo-script--presenting-balise-to-a-municipality-v0-1-1.md)
+- [Demo Script: Presenting Balise to a Municipality](en/docs/guides/demo-script--presenting-balise-to-a-municipality-v0-1-2.md)
+- [Accessibility: Features, Checks and Next Steps](en/docs/accessibility/accessibility--features-checks-and-next-steps-v0-1-0.md)
 - [Commit and Versioning Workflow](en/docs/guides/devops/commit-and-versioning-workflow-v0-3-0.md)
 - [Balise local web setup](en/docs/devops/balise/README.md), the web container, Caddy and name publishing
 - [Session Log: Building the Balise SOS Demo](en/docs/process/sessions/2026-10-06--building-the-balise-sos-demo-v0-3-0.md), the start-to-finish record
@@ -57,7 +58,7 @@ Start with the overview, then the guide for your role.
 Decision records:
 
 - [ADR-001: Static Site Built With Eleventy](en/docs/architecture/adrs/adr-001-static-site-built-with-eleventy-v0-1-1.md)
-- [ADR-002: Two Offline Delivery Modes From One Build](en/docs/architecture/adrs/adr-002-two-offline-delivery-modes-from-one-build-v0-1-2.md)
+- [ADR-002: Two Offline Delivery Modes From One Build](en/docs/architecture/adrs/adr-002-two-offline-delivery-modes-from-one-build-v0-1-3.md)
 - [ADR-003: Search Index as a Plain Script](en/docs/architecture/adrs/adr-003-search-index-as-a-plain-script-v0-1-0.md)
 - [ADR-004: Relative File Links Everywhere](en/docs/architecture/adrs/adr-004-relative-file-links-everywhere-v0-1-1.md)
 - [ADR-005: Bilingual Pages Paired by Work Identifier](en/docs/architecture/adrs/adr-005-bilingual-pages-paired-by-work-identifier-v0-1-0.md)

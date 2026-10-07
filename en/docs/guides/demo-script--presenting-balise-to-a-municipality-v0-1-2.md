@@ -1,11 +1,11 @@
 ---
 dc:title: "Demo Script: Presenting Balise to a Municipality"
-dcterms:version: "0.1.1"
+dcterms:version: "0.1.2"
 dc:creator: "Christopher Steel"
 dc:contributor: "Claude Opus 5.5 (Anthropic)"
 dc:description: "A fifteen-minute script for showing Balise to a municipality, with preparation, key moments and common questions."
 dcterms:created: "2026-10-06"
-dcterms:modified: "2026-10-06"
+dcterms:modified: "2026-10-07"
 dc:format: "text/markdown"
 dc:language: "en"
 sat:language_bcp47: "en"
@@ -18,6 +18,10 @@ sat:uuid: ""
 sat:version_at_creation: ""
 sat:migration_status: pre-sat
 sat:changelog:
+  - version: "0.1.2"
+    date: "2026-10-07"
+    author: "Christopher Steel"
+    notes: "The This copy page is now the Balise page; the online/offline indicator added to the three copies segment."
   - version: "0.1.1"
     date: "2026-10-06"
     author: "Christopher Steel"
@@ -30,7 +34,7 @@ sat:changelog:
 
 # Demo Script: Presenting Balise to a Municipality
 
-Version: 0.1.1
+Version: 0.1.2
 Status: Draft
 Style Guide: style-guide--plain-language-for-general-audiences
 
@@ -56,7 +60,7 @@ This is a script for showing Balise to a municipality in about fifteen minutes. 
 
 **Switch language (1 minute).** Press "English" on a procedure. It lands on the same procedure, not the home page.
 
-**The three copies (3 minutes).** Show the footer line: which kind of copy, how old. Show the "This copy" page and the download. Hand over the printed binder: the copy that works when every battery is flat.
+**The three copies (3 minutes).** Show the footer line: which kind of copy, how old. Show the Balise page and the download. Press the indicator in the header with the network on, then with it off: it says Online, then Offline, in words. Hand over the printed binder: the copy that works when every battery is flat.
 
 **What it would take (3 minutes).** Their procedures in markdown, two languages, a review date and an owner for each. A web address, theirs or ours. One afternoon of setup on their computers. No accounts, no licences, no vendor to depend on; every file is theirs.
 
@@ -82,5 +86,6 @@ This document, *Demo Script: Presenting Balise to a Municipality*, by **Christop
 
 | Version | Status | Notes |
 |---------|--------|-------|
+| 0.1.2 | Draft | The This copy page is now the Balise page; the online/offline indicator added to the three copies segment. |
 | 0.1.1 | Draft | Running-cost answer no longer names GitHub Pages. |
 | 0.1.0 | Draft | Initial draft. |

@@ -15,6 +15,10 @@ playwright, then playwright install chromium). Run after `npm run build`.
      works. With the network stalled rather than cut, the way a phone on
      Wi-Fi with no working connection behaves, the language switch still
      answers at once from storage.
+  3. Navigation submenus open and close from the keyboard, and the
+     online/offline indicator follows the network.
+  4. Accessibility: axe-core checks every page against WCAG 2.2 A and AA
+     rules, in light and dark colour schemes, with a submenu open as well.
 
 Screenshots land in tests/screenshots/ (ignored by git).
 
@@ -34,6 +38,8 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "_site"
+AXE = ROOT / "node_modules" / "axe-core" / "axe.min.js"
+AXE_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"]
 SHOTS = ROOT / "tests" / "screenshots"
 failures = []
 stall = threading.Event()
@@ -106,7 +112,10 @@ def web_mode(browser, base):
     page.wait_for_function("document.getElementById('copy-status').textContent.indexOf('Copy stored') !== -1", timeout=15000)
     check("Copy stored" in page.inner_text("#copy-status"), "web: footer says stored offline")
 
-    page.click("text=This copy")
+    page.wait_for_function("document.getElementById('net-status').getAttribute('data-state') === 'online'", timeout=10000)
+    check(page.inner_text("#net-status .net-text") == "Online", "web: indicator says Online")
+
+    page.click(".site-nav a:text-is('Balise')")
     page.wait_for_load_state()
     page.click("[data-action=check-update]")
     page.wait_for_function("document.getElementById('update-result').textContent.indexOf('…') === -1 && document.getElementById('update-result').textContent.length > 0")
@@ -120,8 +129,17 @@ def web_mode(browser, base):
     elapsed = time.monotonic() - started
     stall.clear()
     check("/fr-ca/procedures/" in page.url and elapsed < 1.5, f"web stalled: language switch answers from storage ({elapsed:.1f} s)")
+    # Let the stalled background refresh finish before cutting the network.
+    page.wait_for_function("document.getElementById('net-status').getAttribute('data-state') === 'online'", timeout=STALL_SECONDS * 2000)
 
     context.set_offline(True)
+    page.wait_for_function("document.getElementById('net-status').getAttribute('data-state') === 'offline'", timeout=5000)
+    check(page.inner_text("#net-status .net-text") == "Hors ligne", "web offline: indicator turns Offline (Hors ligne on this French page)")
+    page.goto(base + "en-ca/balise/index.html")
+    page.click("[data-action=check-update]")
+    page.wait_for_function("document.getElementById('update-result').textContent.indexOf('…') === -1 && document.getElementById('update-result').textContent.length > 0", timeout=12000)
+    check("Could not reach" in page.inner_text("#update-result"), "web offline: update check says it cannot reach the site, not up to date")
+    check(page.get_attribute("#net-status", "data-state") == "offline", "web offline: indicator stays Offline on a page opened from storage")
     page.goto(base + "fr-ca/procedures/avis-d-ebullition/index.html")
     check("ébullition" in page.inner_text("h1"), "web offline: never-visited French page opens from storage")
     page.goto(base + "fr-ca/recherche/index.html?q=hebergement")
@@ -131,15 +149,71 @@ def web_mode(browser, base):
     context.close()
 
 
+def submenus(browser, base):
+    page = browser.new_page(viewport={"width": 1024, "height": 800})
+    page.goto(base + "en-ca/contacts/index.html")
+    toggle = page.locator(".sub-toggle[aria-controls]").first
+    check(toggle.is_visible() and toggle.get_attribute("aria-expanded") == "false", "nav: submenu button shown, closed")
+    toggle.focus()
+    page.keyboard.press("Enter")
+    sub = page.locator("#" + toggle.get_attribute("aria-controls"))
+    check(toggle.get_attribute("aria-expanded") == "true" and sub.is_visible(), "nav: Enter opens the submenu")
+    check(sub.locator("a").count() == 6, "nav: Procedures submenu lists the six procedures")
+    page.keyboard.press("Tab")
+    focused = page.evaluate("document.activeElement.textContent")
+    check(focused.strip() == sub.locator("a").first.inner_text().strip(), "nav: Tab moves into the open submenu")
+    page.keyboard.press("Escape")
+    check(toggle.get_attribute("aria-expanded") == "false" and not sub.is_visible(), "nav: Escape closes the submenu")
+    check(page.evaluate("document.activeElement.className") == "sub-toggle", "nav: Escape returns focus to the button")
+    balise = page.locator(".site-nav a:text-is('Balise') + .sub-toggle")
+    balise.click()
+    page.click("text=How updating works")
+    page.wait_for_load_state()
+    check(page.url.endswith("#how-updating-works") and page.locator("#how-updating-works").is_visible(), "nav: section link lands on its heading")
+    page.close()
+
+    phone = browser.new_page(viewport={"width": 320, "height": 640})
+    phone.goto(base + "fr-ca/index.html")
+    phone.locator(".site-nav .sub-toggle").last.click()
+    wide = phone.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
+    check(wide, "nav: open submenu at 320 px wide causes no sideways scroll")
+    phone.close()
+
+
+def accessibility(browser, base):
+    pages = sorted(str(p.relative_to(SITE)) for p in SITE.rglob("*.html") if "download" not in p.parts)
+    for scheme in ("light", "dark"):
+        context = browser.new_context(viewport={"width": 1024, "height": 800}, color_scheme=scheme, service_workers="block")
+        page = context.new_page()
+        problems = []
+        for rel in pages:
+            page.goto(base + rel)
+            if rel.endswith("en-ca/index.html"):
+                page.locator(".sub-toggle").first.click()
+            page.add_script_tag(path=str(AXE))
+            result = page.evaluate("t => axe.run(document, { runOnly: { type: 'tag', values: t } })", AXE_TAGS)
+            for v in result["violations"]:
+                targets = ", ".join(" ".join(n["target"]) for n in v["nodes"][:3])
+                problems.append(f"{rel}: {v['id']} ({v['impact']}) {targets}")
+        for line in problems:
+            print("     " + line)
+        check(not problems, f"axe, {scheme}: {len(pages)} pages, no WCAG 2.2 A/AA violations")
+        context.close()
+
+
 def main():
     if not (SITE / "index.html").exists():
         sys.exit("Build first: npm run build")
+    if not AXE.exists():
+        sys.exit("axe-core missing: npm ci")
     SHOTS.mkdir(parents=True, exist_ok=True)
     httpd, base = serve_under_subpath()
     with sync_playwright() as p:
         browser = p.chromium.launch()
         file_mode(browser)
         web_mode(browser, base)
+        submenus(browser, base)
+        accessibility(browser, base)
         browser.close()
     httpd.shutdown()
     if failures:

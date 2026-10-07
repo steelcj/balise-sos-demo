@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-07
+
 ### Added
 
 - Online/offline indicator in the header of every page: Online, Offline or Network not checked, in words, learned from the service worker's background page refreshes and the browser's online and offline events, with no polling; pressing it checks the connection

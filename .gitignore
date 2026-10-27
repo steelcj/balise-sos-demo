@@ -7,6 +7,7 @@
 # If a repo already has a .gitignore, reconcile these entries into it
 # by hand once. See en/docs/guides/devops/runbook--cutting-and-publishing-releases-v0-1-0.md.
 
+.claude/
 # publish-release.py's output: tarball, SHA256SUMS, optional GPG .asc
 # signature (confirmed directly from source: DIST_DIR = _HERE / "dist")
 dist/
